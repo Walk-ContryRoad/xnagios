@@ -1,0 +1,4 @@
+This script used for delete the remote git repo.
+Every week we merge the remote branch to the master.
+Then the remote branch is no need.
+So we have to delete them.

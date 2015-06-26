@@ -1,0 +1,22 @@
+Use git and fabric to deploy monitor on nagios.
+
+After locale git add and git commit.
+
+git status
+if diverge:
+    git reset --hard origin/develop
+else:
+    git pull
+
+git merge --no-ff request/XXXX
+if conflict:
+    git mergetool --tool=meld
+	git commit
+git push
+fab gearman.deploy
+
+if error:
+    git reset --hard XXXX
+	git push -f
+
+
