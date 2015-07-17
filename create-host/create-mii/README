@@ -1,0 +1,11 @@
+Write you host and address.
+Run this program and you will create all host in nagios.
+
+Format should be like this:
+MXSILVMW0001.SIL.MX.CORP 10.101.34.11 MXSILVMW0002.SIL.MX.CORP 10.101.34.14
+
+Version1:
+    This langurage is bash.
+
+Version2:
+    Use python to rewrite it.

@@ -1,0 +1,9 @@
+Write your hostname and address to hosts.txt
+And  run this program.
+You'll create all the host in nagios.
+
+The format should be:
+wwiamsql0001.dc.ege.ds 10.224.13.41
+
+The hostname should be upper case and the same with the file name.
+The address can be the IP or the hostname with lower case.

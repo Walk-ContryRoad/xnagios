@@ -1,1 +1,12 @@
 Auto config nagios.
+
+The password for mysql on my workstation is cnshavmw1003.
+
+deploy: deploy to dev and inc.
+
+host_rm: rm host.
+
+host_add: add host.
+
+branch_rm: rm branch.
+

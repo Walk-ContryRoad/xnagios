@@ -1,0 +1,13 @@
+wwiamwww0001.dc.ege.ds 10.224.13.21 
+wwiamwww0002.dc.ege.ds 10.224.13.22
+wwiamwww0003.dc.ege.ds 10.224.13.23
+wwiamwww0011.dc.ege.ds 10.224.13.26
+wwiamwww0012.dc.ege.ds 10.224.13.27
+wwiamapp0001.dc.ege.ds 10.224.13.31
+wwiamapp0002.dc.ege.ds 10.224.13.32
+wwiamapp0003.dc.ege.ds 10.224.13.33
+wwiamapp0004.dc.ege.ds 10.224.13.34
+wwiamapp0011.dc.ege.ds 10.224.13.36
+wwiamapp0012.dc.ege.ds 10.224.13.37
+wwiamapp0013.dc.ege.ds 10.224.13.38
+wwiamapp0014.dc.ege.ds 10.224.13.39
