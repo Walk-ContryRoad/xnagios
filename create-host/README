@@ -1,0 +1,15 @@
+If some hosts use the same area environment and application.
+You can use this script and write them in a file.
+If just one host you can use command line and options..
+
+ohtpl_area_XXX
+ohtpl_env_XXX
+bhtpl/htpl_app_XXX_XXX
+
+hosts.txt format eg:
+area:
+environment:
+application:
+parents:
+ROMIOAPP0005           10.196.73.32    
+romioapp0005.ww.corp   romioapp0005.ww.corp
