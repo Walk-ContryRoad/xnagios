@@ -109,7 +109,6 @@ def delete_branch(lastlines, user):
             number = line.split()[0].split("#")[1]
             os.system("git push -u origin :u/%s/request/%d" %
                       (user, int(number)))
-    print "exit delete branch"
 
 
 # Main fucntion
