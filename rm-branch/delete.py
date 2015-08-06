@@ -101,23 +101,6 @@ def get_url(url):
     return lines
 
 
-# Get the lastlines.
-def get_lastlines(lines, start, end):
-    for loop in range(0, len(lines)):
-        line = lines[loop]
-        if line.startswith(start):
-            startline = loop
-        if line.startswith(end):
-            endline = loop
-            break
-    if startline in locals().keys() and endline in locals().keys():
-        lastlines = lines[startline:endline]
-    else:
-        print ">>> This week isn't exist on this page.<<<"
-        lastlines = ""
-    return lastlines
-
-
 # Delete the branch.
 def delete_branch(lastlines, user):
     for loop in range(0, len(lastlines)):
@@ -126,6 +109,7 @@ def delete_branch(lastlines, user):
             number = line.split()[0].split("#")[1]
             os.system("git push -u origin :u/%s/request/%d" %
                       (user, int(number)))
+    print "exit delete branch"
 
 
 # Main fucntion
@@ -147,26 +131,35 @@ def main():
         for loop in range(0, len(args.week)):
             week = args.week[loop]
             lines = get_url(url)
-            newlines = get_lastlines(lines,
-                                     "Nagios Integration - W%d-%d" %
-                                     (week, args.year),
-                                     "Nagios Integration")
-            # This week not exist in this page.
-            if not newlines:
-                continue
-            lastlines = get_lastlines(newlines,
-                                      "Requests merged in production (MASTER)",
-                                      "Requests kept-back in pre-production "
-                                      "(INCUBATOR):")
-            delete_branch(lastlines, user)
+            tag = 0
+            for loop in range(0, len(lines)):
+                line = lines[loop]
+                if "Nagios Integration - W%d-%d" % (week, args.year) in line:
+                    tag = 1
+                    startline = loop
+                    for loo in range(0, len(lines)):
+                        lin = lines[loo]
+                        if "Requests kept-back in pre-production" in lin:
+                            if loo > startline:
+                                endline = loo
+                                break
+                    lastlines = lines[startline:endline]
+                    delete_branch(lastlines, user)
+                    break
+            if tag == 0:
+                print ">>>%d week isn't exist in this page.<<<" % week
 
     # Default to delete the lastweek.
     else:
         lines = get_url(url)
-        lastlines = get_lastlines(lines,
-                                  "Requests merged in production (MASTER)",
-                                  "Requests kept-back in pre-production "
-                                  "(INCUBATOR):")
+        for loop in range(0, len(lines)):
+            line = lines[loop]
+            if line.startswith("Requests merged in production"):
+                startline = loop
+            if line.startswith("Requests kept-back in pre-production"):
+                endline = loop
+                break
+        lastlines = lines[startline:endline]
         delete_branch(lastlines, user)
 
 if __name__ == "__main__":
