@@ -1,4 +1,53 @@
-This script used for delete the remote git repo.
-Every week we merge the remote branch to the master.
-Then the remote branch is no need.
-So we have to delete them.
+About this script
+=================
+
+This script is used for delete the remote branch in the center repository,
+after weekly integration finished.
+
+You can test it like this:
+
+# Remove branch u/$USER/request/1234 and u/$USER/request/5678.
+./delete.py -b 1234 -b 5678   
+
+# Remove the W32-2015 and W12-2015 which branchs in master.
+./delete.py -w 32 -w 12 
+
+If you have more than one repository faurecia-nagios-configuration on your
+computer, you'd better use -p option to specify which one you use practicality.
+If you don't want to specify, it's ok, the script can prob it automatic.
+./delete.py -p /home/chengca/faurecia-nagios-configuration
+
+If your environment $USER is different with the $USER here u/$USER/request/XXXX.
+You have to use -U the_username_in_branch to specify the username.
+Or, the default username is "echo $USER".
+./delete.py -U chengca
+
+If it's another year, you can use -y option to specify the new year.
+The default year is 2015.
+./delete.py -y 2016
+
+If you didn't specify the option -w or -b.
+The script remove the newest week on this page:
+http://monitoring-dc.app.corp/tracking/news/.
+If you want to specify another page use -u option.
+./delete.py -u "http://monitoring-dc.app.corp/tracking/news?page=2"
+
+-------
+How to:
+-------
+    If you don't want to do it yourself.
+    You can write it to crontab.
+    It can do it automatic.
+
+    eg:
+    crontab -e
+    00 15 * * 4 /home/chengca/Share/myCode/Nagios-Auto/rm-branch/delete.py > /home/chengca/Share/myCode/Nagios-Auto/rm-branch/delete.log 2>&1
+    crontab -l
+
+    This crontab do it every thursday at 15:00:00.
+    You can use the log for debug.
+
+-----------
+About bugs:
+-----------
+    Any bugs please contact canux.cheng@faurecia.com

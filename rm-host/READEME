@@ -1,1 +1,3 @@
 This script used  for remove a host from nagios.
+You can use option -n to pass the host name.
+And you can write a lots of hostnames in a file and remove them.
