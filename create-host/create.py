@@ -13,24 +13,20 @@
 
 import argparse
 import os
+import commands
+import sys
 
 parser = argparse.ArgumentParser(description="Create new hosts in nagios.")
-parser.add_argument("-l", "--location",
-                    dest="location",
+parser.add_argument("-P", "--path",
+                    dest="path",
                     required=False,
-                    help="The area of the host, eg: ohtpl_area_XX.")
-parser.add_argument("-e", "--environment",
-                    dest="environment",
-                    required=False,
-                    help="The environment of host, eg: ohtpl_env_XX.")
-parser.add_argument("-p", "--parents",
-                    dest="parents",
-                    required=False,
-                    help="The parents of host, eg: CLUSTER_BIS6_US.")
+                    help="Use this specify the path of your git repo.")
 parser.add_argument("-a", "--applications",
+                    action="append",
                     dest="applications",
                     required=False,
-                    help="The application of host, eg: htpl_app_XX.")
+                    help="The application of host, eg: htpl_app_XX. \
+                    you can specify the area and environment.")
 parser.add_argument("-n", "--name",
                     dest="name",
                     required=False,
@@ -41,6 +37,10 @@ parser.add_argument("-i", "--ip",
                     required=False,
                     help="The ip or dns of the host, \
                     eg: plwlbvmw0001.wlb.pl.corp or 10.135.17.116.")
+parser.add_argument("-p", "--parents",
+                    dest="parents",
+                    required=False,
+                    help="The parents of host, eg: CLUSTER_BIS6_US.")
 parser.add_argument("-s", "--services",
                     action="append",
                     dest="services",
@@ -62,37 +62,28 @@ parser.add_argument("-f", "--files",
 args = parser.parse_args()
 
 cur = os.getcwd()
-home = os.environ["HOME"]
-g_dir = "%s/faurecia-nagios-configuration/hosts" % home
+home = os.getenv("HOME")
+path = "faurecia-nagios-configuration"
+if args.path:
+    g_dir = "%s/hosts" % args.path
+else:
+    output = commands.getoutput("sudo find %s -name %s" % (home, path))
+    if len(output.split()) != 1:
+        print """%s
+        More than one path.
+        Please use -P to specify the path.""" % output
+        sys.exit()
+    else:
+        g_dir = "%s/hosts" % output
 comment = "###########################################"
-
-
-def usage():
-    print("This is command line mode, \
-          arguments for -a -n and -i is necessary.")
-    print("""-l, --location,
-              The area of the host, eg: ohtpl_area_XX.""")
-    print("""-e, --environment,
-              The environment of host, eg: ohtpl_env_XX.""")
-    print("""-p, --parents,
-              The parents of host, eg: CLUSTER_BIS6_US.""")
-    print("""-a, --applications,
-              The application of host, eg: htpl_app_XX.""")
-    print("""-n, --name,
-              The hostname of host, \
-              eg: PLWLBVMW0001, lower case or upper case is ok.""")
-    print("""-i, --ip,
-              The ip or dns of the host, \
-              eg: plwlbvmw0001.wlb.pl.corp or 10.135.17.116.""")
-    print("""-s, --services,
-              The services of the host, eg: inc_app_XXX.""")
 
 
 def main():
     # Just use the file not the command line options.
-    if args.files:
+    if args.files and args.mode:
         for loop in range(0, len(args.files)):
             filename = args.files[loop]
+            print ">>> in %s <<<" % filename
             file = "%s/%s.txt" % (cur, filename)
             templates = "%s/%s.cfg" % (cur, filename)
             f = open(file, "r")
@@ -104,7 +95,7 @@ def main():
                 # If file exist, jump to next one.
                 if os.path.isfile(hostfile):
                     print "\n%s%s" % (comment, comment)
-                    print "# %s exist, next one. #" % hostfile
+                    print "# %s exist, next one.#" % hostfile
                     print "%s%s\n" % (comment, comment)
                     continue
                 # If a new host, create it.
@@ -121,56 +112,53 @@ def main():
             f.close()
 
     # Use the command line options not the file.
-    else:
-        if args.applications and args.name and args.ip:
-            hostname = args.name.upper()
-            address = args.ip.lower()
-            hostfile = "%s/%s.cfg" % (g_dir, hostname)
-            if os.path.isfile(hostfile):
-                print "\n%s%s" % (comment, comment)
-                print "# %s exist, next one. #" % hostfile
-                print "%s%s\n" % (comment, comment)
-            else:
-                f = open(hostfile, "a")
-                f.write("""def host {
+    elif args.applications and args.name and args.ip:
+        hostname = args.name.upper()
+        address = args.ip.lower()
+        hostfile = "%s/%s.cfg" % (g_dir, hostname)
+        if os.path.isfile(hostfile):
+            print "\n%s%s" % (comment, comment)
+            print "# %s exist, next one.#" % hostfile
+            print "%s%s\n" % (comment, comment)
+        else:
+            f = open(hostfile, "a")
+            f.write("""define host {
     host_name  %s
     address    %s\n""" % (hostname, address))
-                if args.location and args.environment:
-                    f.write("""    use        %s,\\
-               %s,\\
-               %s""" % (args.location,
-                        args.environment,
-                        args.applications))
-                elif args.location and (not args.environment):
-                    f.write("""    use        %s,\\
-               %s""" % (args.location,
-                        args.applications))
-                elif args.environment and (not args.location):
-                    f.write("""    use        %s,\\
-               %s""" % (args.environment,
-                        args.applications))
-                else:
-                    f.write("    use        %s" % (args.applications))
-                if args.parents:
-                    f.write("\n    parents    %s\n" % args.parents)
-                if args.services:
-                    if len(args.services) == 1:
-                        f.write("    hostgroups +%s" % args.services[0])
+            if len(args.applications) == 1:
+                f.write("    use        %s\n" % args.applications[0])
+            else:
+                for loop in range(0, len(args.applications)):
+                    if loop == 0:
+                        f.write("    use        %s,\\\n" %
+                                args.applications[loop])
+                    elif loop == len(args.applications) - 1:
+                        f.write("               %s\n" %
+                                args.applications[loop])
                     else:
-                        for lo in range(0, len(args.services)):
-                            if lo == 0:
-                                f.write("    hostgroups +%s,\\\n" %
-                                        args.services[lo])
-                            elif lo == len(args.services) - 1:
-                                f.write("               %s" %
-                                        args.services[lo])
-                            else:
-                                f.write("               %s,\\\n" %
-                                        args.services[lo])
-                f.write("\n}\n")
-                f.close()
-        else:
-            usage()
+                        f.write("               %s,\\\n" %
+                                args.applications[loop])
+            if args.parents:
+                f.write("    parents    %s\n" % args.parents)
+            if args.services:
+                if len(args.services) == 1:
+                            f.write("    hostgroups +%s\n" % args.services[0])
+                else:
+                    for loop in range(0, len(args.services)):
+                        if loop == 0:
+                            f.write("    hostgroups +%s,\\\n" %
+                                    args.services[loop])
+                        elif loop == len(args.services) - 1:
+                            f.write("               %s\n" %
+                                    args.services[loop])
+                        else:
+                            f.write("               %s,\\\n" %
+                                    args.services[loop])
+            f.write("}\n")
+            f.close()
+    else:
+        print "Please specify the arguments. And try again."
+        sys.exit()
 
 if __name__ == "__main__":
     main()

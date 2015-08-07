@@ -1,2 +1,17 @@
-This script used for create a new application.
-Which means create the hostgroups file and the templates file for  the new application.
+================
+About the script
+================
+
+This script used create an application in nagios configuration.
+
+------
+How to
+------
+
+-a  use this option to specify the application name.
+-d  use this option to specify the domain, if there is no domain, ignore it.
+-s  use this option to specify the system, support multiple system.
+-p specify the path of faurecia-nagios-configuration if you have more than one repo on your computer.Or you can ignore it, the script can find it automatic.
+
+eg:
+./create.py -a ijcore -d eit -s linux -s win -s aix -p /home/chengca/faurecia-nagios-configuration

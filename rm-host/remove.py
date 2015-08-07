@@ -12,10 +12,16 @@
 ######################################################################
 
 import os
+import sys
 import argparse
+import commands
 
 parser = argparse.ArgumentParser(description="This script used for remove \
                                  host from nagios.")
+parser.add_argument("-p", "--path",
+                    dest="path",
+                    required=False,
+                    help="The path of faurecia-nagios-configuration.")
 parser.add_argument("-n", "--name",
                     action="append",
                     dest="name",
@@ -28,14 +34,20 @@ parser.add_argument("-f", "--file",
 args = parser.parse_args()
 
 cur = os.getcwd()
-home = os.environ["HOME"]
-g_dir = "%s/faurecia-nagios-configuration/hosts" % home
+home = os.getenv("HOME")
+path = "faurecia-nagios-configuration"
+if args.path:
+    g_dir = "%s/hosts" % args.path
+else:
+    output = commands.getoutput("sudo find %s -name %s" % (home, path))
+    if len(output.split()) != 1:
+        print """%s
+        More than one path.
+        Please use -P to specify the path.""" % output
+        sys.exit()
+    else:
+        g_dir = "%s/hosts" % output
 comment = "#########################################"
-
-
-def usage():
-    print "Use command line option -n to remove host from nagios."
-    print "-n hostname1 -n hostname2 ...."
 
 
 def main():
@@ -52,7 +64,7 @@ def main():
                     print "%s%s\n" % (comment, comment)
                 else:
                     os.remove(hostfile)
-    else:
+    elif args.name:
         if args.name:
             for loop in range(0, len(args.name)):
                 hostname = args.name[loop].split(".")[0].strip().upper()
@@ -63,8 +75,9 @@ def main():
                     print "%s%s\n" % (comment, comment)
                 else:
                     os.remove(hostfile)
-        else:
-            usage()
+    else:
+        print "Please specify the options. And try again."
+        sys.exit()
 
 if __name__ == "__main__":
     main()

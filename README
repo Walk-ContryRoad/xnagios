@@ -1,12 +1,34 @@
-Auto config nagios.
+==================
+About this project
+==================
 
-The password for mysql on my workstation is cnshavmw1003.
+This project is trying to config the nagios automatic.
+There are two kinds of styles.
+One is command line, and another is GUI.
+The program trying to filter data from redmine and trying to config the nagios automatic.
+And deploy the configuration to dev/inc automatic.
 
-deploy: deploy to dev and inc.
+--------
+progress
+--------
 
-host_rm: rm host.
+Now, some of the functions have finished for command line.
+But you have to do something by your hands.
+Filter data from redmine havn't finished.
 
-host_add: add host.
+-------
+Join us
+-------
 
-branch_rm: rm branch.
+This is a open source project.
+If you are interested.
+Welcome to join us.
+You can download here:
+git@github.com:CanuxCheng/Nagios-Auto.git
 
+----------
+About bugs
+----------
+
+If you find any bugs please contact the author.
+canux.cheng@faurecia.com

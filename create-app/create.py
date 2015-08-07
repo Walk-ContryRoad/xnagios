@@ -12,18 +12,16 @@
 ######################################################################
 
 import os
+import sys
 import argparse
-
-
-cur = os.getcwd()
-home = os.environ["HOME"]
-g_dir = "faurecia-nagios-configuration"
-t_dir = "%s/%s/templates/hosts/app" % (home, g_dir)
-h_dir = "%s/%s/hostgroups/app" % (home, g_dir)
-
+import commands
 
 parser = argparse.ArgumentParser(description="This script used for create a \
                                  new application in nagios.")
+parser.add_argument("-p", "--path",
+                    dest="path",
+                    required=False,
+                    help="The path of faurecia-nagios-configuration.")
 parser.add_argument("-a", "--application",
                     dest="application",
                     required=True,
@@ -41,6 +39,23 @@ parser.add_argument("-s", "--system",
                     eg: win aix solaris linux as400 bladecenter \
                     and hyper-v. Multity system use -s system1 -s system2 ...")
 args = parser.parse_args()
+
+cur = os.getcwd()
+home = os.getenv("HOME")
+path = "faurecia-nagios-configuration"
+if args.path:
+    g_dir = args.path
+else:
+    output = commands.getoutput("sudo find %s -name %s" % (home, path))
+    if len(output.split()) != 1:
+        print """%s
+        More than one path.
+        Please use -P to specify the path.""" % output
+        sys.exit()
+    else:
+        g_dir = output
+t_dir = "%s/templates/hosts/app" % (g_dir)
+h_dir = "%s/hostgroups/app" % (g_dir)
 
 
 def main():

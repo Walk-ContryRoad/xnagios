@@ -63,7 +63,7 @@ def define_arguments():
     args = parser.parse_args()
 
     # Change to faurecia-nagios-configuration folder.
-    home = os.environ["HOME"]
+    home = os.getenv("HOME")
     path = "faurecia-nagios-configuration"
     if args.path:
         g_dir = args.path
@@ -71,9 +71,10 @@ def define_arguments():
         output = commands.getoutput("sudo find %s -name %s" % (home, path))
         # If more than one path, you must assign one.
         if len(output.split()) != 1:
-            print """More than one %s.
-            Use -p to specify the path is adviced.""" % path
-            g_dir = output.split()[0]
+            print """%s
+            More than one.
+            Use -p to specify the path is adviced.""" % output
+            sys.exit()
         else:
             g_dir = output
     print "Use: %s" % g_dir

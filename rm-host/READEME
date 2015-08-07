@@ -1,3 +1,20 @@
-This script used  for remove a host from nagios.
-You can use option -n to pass the host name.
-And you can write a lots of hostnames in a file and remove them.
+================
+About the script
+================
+
+This script used for remove host from nagios configuration.
+
+------
+How to
+------
+
+You have two ways to use this script.
+
+-p specify the path of faurecia-nagios-configuration if you have more than one repo on your computer.Or you can ignore it, the script can find it automatic.
+-n specify the hostname.
+-f specify the filename.
+
+eg:
+./remove.py -n host1 -n host2 -p /home/chengca/faurecia-nagios-configuration
+
+./remove.py -f host.txt -p /home/chengca/faurecia-nagios-configurationu
