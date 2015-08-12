@@ -66,7 +66,6 @@ def define_arguments():
     g_dir = args.path
     os.chdir(g_dir)
 
-    # Get the username.
     if args.user:
         user = args.user
     else:

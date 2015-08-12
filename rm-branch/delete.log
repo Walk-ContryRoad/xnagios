@@ -1,4 +1,36 @@
-/home/chengca/faurecia-nagios-configuration
-/home/chengca/Share/GIT/gearman/faurecia-nagios-configuration
-            More than one.
-            Use -p to specify the path is adviced.
+error: unable to delete 'u/None/request/4951': remote ref does not exist
+error: failed to push some refs to 'git@monitoring-dc.app.corp:gearman/faurecia-nagios-configuration.git'
+error: unable to delete 'u/None/request/4950': remote ref does not exist
+error: failed to push some refs to 'git@monitoring-dc.app.corp:gearman/faurecia-nagios-configuration.git'
+error: unable to delete 'u/None/request/4948': remote ref does not exist
+error: failed to push some refs to 'git@monitoring-dc.app.corp:gearman/faurecia-nagios-configuration.git'
+error: unable to delete 'u/None/request/4946': remote ref does not exist
+error: failed to push some refs to 'git@monitoring-dc.app.corp:gearman/faurecia-nagios-configuration.git'
+error: unable to delete 'u/None/request/4945': remote ref does not exist
+error: failed to push some refs to 'git@monitoring-dc.app.corp:gearman/faurecia-nagios-configuration.git'
+error: unable to delete 'u/None/request/4944': remote ref does not exist
+error: failed to push some refs to 'git@monitoring-dc.app.corp:gearman/faurecia-nagios-configuration.git'
+error: unable to delete 'u/None/request/4943': remote ref does not exist
+error: failed to push some refs to 'git@monitoring-dc.app.corp:gearman/faurecia-nagios-configuration.git'
+error: unable to delete 'u/None/request/4942': remote ref does not exist
+error: failed to push some refs to 'git@monitoring-dc.app.corp:gearman/faurecia-nagios-configuration.git'
+error: unable to delete 'u/None/request/4940': remote ref does not exist
+error: failed to push some refs to 'git@monitoring-dc.app.corp:gearman/faurecia-nagios-configuration.git'
+error: unable to delete 'u/None/request/4939': remote ref does not exist
+error: failed to push some refs to 'git@monitoring-dc.app.corp:gearman/faurecia-nagios-configuration.git'
+error: unable to delete 'u/None/request/4936': remote ref does not exist
+error: failed to push some refs to 'git@monitoring-dc.app.corp:gearman/faurecia-nagios-configuration.git'
+error: unable to delete 'u/None/request/4934': remote ref does not exist
+error: failed to push some refs to 'git@monitoring-dc.app.corp:gearman/faurecia-nagios-configuration.git'
+error: unable to delete 'u/None/request/4925': remote ref does not exist
+error: failed to push some refs to 'git@monitoring-dc.app.corp:gearman/faurecia-nagios-configuration.git'
+error: unable to delete 'u/None/request/4924': remote ref does not exist
+error: failed to push some refs to 'git@monitoring-dc.app.corp:gearman/faurecia-nagios-configuration.git'
+error: unable to delete 'u/None/request/4904': remote ref does not exist
+error: failed to push some refs to 'git@monitoring-dc.app.corp:gearman/faurecia-nagios-configuration.git'
+error: unable to delete 'u/None/request/4887': remote ref does not exist
+error: failed to push some refs to 'git@monitoring-dc.app.corp:gearman/faurecia-nagios-configuration.git'
+error: unable to delete 'u/None/request/4838': remote ref does not exist
+error: failed to push some refs to 'git@monitoring-dc.app.corp:gearman/faurecia-nagios-configuration.git'
+error: unable to delete 'u/None/request/4675': remote ref does not exist
+error: failed to push some refs to 'git@monitoring-dc.app.corp:gearman/faurecia-nagios-configuration.git'

@@ -24,15 +24,20 @@ class NagiosAuto():
         self.version = version
         self.description = description
 
+        logging.basicConfig(format='[%(levelname)s] (%(module)s) %(message)s')
+        logger = logging.getLogger("NagiosAuto")
+        logger.setLevel(logging.INFO)
+
         self.parser = argparse.ArgumentParser(description=self.description)
-        self.define_options()
+        self.parser.add_argument("--debug",
+                                 action="store_true",
+                                 dest="debug",
+                                 help="Show debug information.")
         self.required_args = self.parser.add_argument_group("Subprocess.")
+        self.define_options()
         self.options = self.parser.parse_args()
 
         if self.options.debug:
-            logging.basicConfig(
-                format='[%(levelname)s] (%(module)s) %(message)s')
-            logger = logging.getLogger("nagios")
             logger.setLevel(logging.DEBUG)
             logger.debug("==== BEGIN DEBUG ====")
             logger.debug("name: %s", self.name)
@@ -42,7 +47,8 @@ class NagiosAuto():
                 logger.debug("==== END DEBUG ====")
 
     def define_options(self):
-        self.parser.add_argument("--debug",
-                                 action="store_true",
-                                 dest="debug",
-                                 help="Show debug information.")
+        self.required_args.add_argument("-P", "--path",
+                                        dest="path",
+                                        required=False,
+                                        help="The path of \
+                                        faurecia-nagios-configuration.")

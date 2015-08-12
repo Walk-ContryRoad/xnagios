@@ -11,33 +11,41 @@
 # Description:
 ######################################################################
 
+from Nagios-Auto import NagiosAuto
 import os
 import argparse
 
-parser = argparse.ArgumentParser(description="This script used for create a \
-                                 new application in nagios.")
-parser.add_argument("-p", "--path",
-                    dest="path",
-                    default="/home/chengca/faurecia-nagios-configuration",
-                    required=False,
-                    help="The path of faurecia-nagios-configuration.")
-parser.add_argument("-a", "--application",
-                    dest="application",
-                    required=True,
-                    help="New application name, type is a string.")
-parser.add_argument("-d", "--domain",
-                    dest="domain",
-                    required=False,
-                    help="Domain name, if requestor no ask it's null. \
-                    eg: cws or eit.")
-parser.add_argument("-s", "--system",
-                    action="append",
-                    dest="system",
-                    required=True,
-                    help="What system used in this new applicaion. \
-                    eg: win aix solaris linux as400 bladecenter \
-                    and hyper-v. Multity system use -s system1 -s system2 ...")
-args = parser.parse_args()
+class Application(NagiosAuto):
+    """Function for create new applicaion and remove application."""
+    def __init__(self, *args, **kwargs):
+        super(Application, self).__init__(*args, **kwargs)
+        if "Application" == self.__class__.__name__:
+            logger.debug("==== END DEBUG ====")
+
+    def define_options(self):
+        super(Application, self).define_options()
+        self.parser.add_argument("-p", "--path",
+                                 dest="path",
+                                 default="/home/chengca/faurecia-nagios-configuration",
+                                 required=False,
+                                 help="The path of faurecia-nagios-configuration.")
+        self.parser.add_argument("-a", "--application",
+                                 dest="application",
+                                 required=True,
+                                 help="New application name, type is a string.")
+        self.parser.add_argument("-d", "--domain",
+                                 dest="domain",
+                                 required=False,
+                                 help="Domain name, if requestor no ask it's null. \
+                                 eg: cws or eit.")
+        self.parser.add_argument("-s", "--system",
+                                 action="append",
+                                 dest="system",
+                                 required=True,
+                                 help="What system used in this new applicaion. \
+                                 eg: win aix solaris linux as400 bladecenter \
+                                 and hyper-v. Multity system use -s system1 -s system2 ...")
+        args = parser.parse_args()
 
 cur = os.getcwd()
 home = os.getenv("HOME")
