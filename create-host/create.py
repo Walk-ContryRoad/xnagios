@@ -13,12 +13,12 @@
 
 import argparse
 import os
-import commands
 import sys
 
 parser = argparse.ArgumentParser(description="Create new hosts in nagios.")
 parser.add_argument("-P", "--path",
                     dest="path",
+                    default="/home/chengca/faurecia-nagios-configuration",
                     required=False,
                     help="Use this specify the path of your git repo.")
 parser.add_argument("-a", "--applications",
@@ -37,10 +37,6 @@ parser.add_argument("-i", "--ip",
                     required=False,
                     help="The ip or dns of the host, \
                     eg: plwlbvmw0001.wlb.pl.corp or 10.135.17.116.")
-parser.add_argument("-p", "--parents",
-                    dest="parents",
-                    required=False,
-                    help="The parents of host, eg: CLUSTER_BIS6_US.")
 parser.add_argument("-s", "--services",
                     action="append",
                     dest="services",
@@ -59,31 +55,35 @@ parser.add_argument("-f", "--files",
                     The default file is <hosts.txt>. \
                     And the default templates file is <hosts.cfg>. \
                     Use it like this -f file1 -f file2 ....")
+parser.add_argument("--force",
+                    action="store_true",
+                    dest="force",
+                    required=False,
+                    help="If the file exist force to replace it.")
 args = parser.parse_args()
 
-cur = os.getcwd()
-home = os.getenv("HOME")
-path = "faurecia-nagios-configuration"
-if args.path:
-    g_dir = "%s/hosts" % args.path
-else:
-    output = commands.getoutput("sudo find %s -name %s" % (home, path))
-    if len(output.split()) != 1:
-        print """%s
-        More than one path.
-        Please use -P to specify the path.""" % output
-        sys.exit()
-    else:
-        g_dir = "%s/hosts" % output
+g_dir = "%s/hosts" % args.path
 comment = "###########################################"
+
+
+def create_file(hostfile, templates, hostname, address):
+    fw = open(hostfile, "w")
+    fr = open(templates, "r")
+    rlines = fr.readlines()
+    rlines.insert(3, "    host_name  %s\n" % hostname)
+    rlines.insert(4, "    address    %s\n" % address)
+    for line in rlines:
+        fw.write(line)
+    fr.close()
+    fw.close()
 
 
 def main():
     # Just use the file not the command line options.
     if args.files and args.mode:
         for loop in range(0, len(args.files)):
-            filename = args.files[loop]
-            print ">>> in %s <<<" % filename
+            cur = os.path.dirname(args.files[loop])
+            filename = os.path.basename(args.files[loop])
             file = "%s/%s.txt" % (cur, filename)
             templates = "%s/%s.cfg" % (cur, filename)
             f = open(file, "r")
@@ -94,21 +94,17 @@ def main():
                 hostfile = "%s/%s.cfg" % (g_dir, hostname)
                 # If file exist, jump to next one.
                 if os.path.isfile(hostfile):
-                    print "\n%s%s" % (comment, comment)
-                    print "# %s exist, next one.#" % hostfile
-                    print "%s%s\n" % (comment, comment)
-                    continue
+                    if args.force:
+                        os.remove(hostfile)
+                        create_file(hostfile, templates, hostname, address)
+                    else:
+                        print "\n%s%s" % (comment, comment)
+                        print "# %s exist, next one.#" % hostfile
+                        print "%s%s\n" % (comment, comment)
+                        continue
                 # If a new host, create it.
                 else:
-                    fw = open(hostfile, "w")
-                    fr = open(templates, "r")
-                    rlines = fr.readlines()
-                    rlines.insert(1, "    host_name  %s\n" % hostname)
-                    rlines.insert(2, "    address    %s\n" % address)
-                    for line in rlines:
-                        fw.write(line)
-                    fr.close()
-                    fw.close()
+                    create_file(hostfile, templates, hostname, address)
             f.close()
 
     # Use the command line options not the file.
@@ -122,9 +118,7 @@ def main():
             print "%s%s\n" % (comment, comment)
         else:
             f = open(hostfile, "a")
-            f.write("""define host {
-    host_name  %s
-    address    %s\n""" % (hostname, address))
+            f.write("define host {\n")
             if len(args.applications) == 1:
                 f.write("    use        %s\n" % args.applications[0])
             else:
@@ -138,8 +132,8 @@ def main():
                     else:
                         f.write("               %s,\\\n" %
                                 args.applications[loop])
-            if args.parents:
-                f.write("    parents    %s\n" % args.parents)
+            f.write("""    host_name  %s
+    address    %s\n""" % (hostname, address))
             if args.services:
                 if len(args.services) == 1:
                             f.write("    hostgroups +%s\n" % args.services[0])
