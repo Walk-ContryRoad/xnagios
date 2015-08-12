@@ -13,12 +13,12 @@
 
 import argparse
 import os
-import commands
 import sys
 
 parser = argparse.ArgumentParser(description="Create new hosts in nagios.")
 parser.add_argument("-P", "--path",
                     dest="path",
+                    default="/home/chengca/faurecia-nagios-configuration",
                     required=False,
                     help="Use this specify the path of your git repo.")
 parser.add_argument("-a", "--applications",
@@ -47,6 +47,17 @@ parser.add_argument("-s", "--services",
                     required=False,
                     help="The services of the host, \
                     eg: inc_app_XXX. Use this like -s ex1 -s ex2....")
+parser.add_argument("-d", "--delimiter",
+                    dest="delimiter",
+                    type=str,
+                    default="@",
+                    required=False,
+                    help="This is the delimiter for extra arguments.")
+parser.add_argument("-e", "--extra",
+                    action="append",
+                    dest="extra",
+                    required=False,
+                    help="Add the extra arguments. eg: -e arg1@val1 ")
 parser.add_argument("-m", "--mode",
                     dest="mode",
                     required=False,
@@ -64,17 +75,7 @@ args = parser.parse_args()
 cur = os.getcwd()
 home = os.getenv("HOME")
 path = "faurecia-nagios-configuration"
-if args.path:
-    g_dir = "%s/hosts" % args.path
-else:
-    output = commands.getoutput("sudo find %s -name %s" % (home, path))
-    if len(output.split()) != 1:
-        print """%s
-        More than one path.
-        Please use -P to specify the path.""" % output
-        sys.exit()
-    else:
-        g_dir = "%s/hosts" % output
+g_dir = "%s/hosts" % args.path
 comment = "###########################################"
 
 
@@ -103,8 +104,9 @@ def main():
                     fw = open(hostfile, "w")
                     fr = open(templates, "r")
                     rlines = fr.readlines()
-                    rlines.insert(1, "    host_name  %s\n" % hostname)
-                    rlines.insert(2, "    address    %s\n" % address)
+                    rlines.insert(1, "    host_name            %s\n" %
+                                  hostname)
+                    rlines.insert(2, "    address              %s\n" % address)
                     for line in rlines:
                         fw.write(line)
                     fr.close()
@@ -123,37 +125,44 @@ def main():
         else:
             f = open(hostfile, "a")
             f.write("""define host {
-    host_name  %s
-    address    %s\n""" % (hostname, address))
+    host_name            %s
+    address              %s\n""" % (hostname, address))
             if len(args.applications) == 1:
-                f.write("    use        %s\n" % args.applications[0])
+                f.write("    use                  %s\n" % args.applications[0])
             else:
                 for loop in range(0, len(args.applications)):
                     if loop == 0:
-                        f.write("    use        %s,\\\n" %
+                        f.write("    use                  %s,\\\n" %
                                 args.applications[loop])
                     elif loop == len(args.applications) - 1:
-                        f.write("               %s\n" %
+                        f.write("                         %s\n" %
                                 args.applications[loop])
                     else:
-                        f.write("               %s,\\\n" %
+                        f.write("                         %s,\\\n" %
                                 args.applications[loop])
             if args.parents:
-                f.write("    parents    %s\n" % args.parents)
+                f.write("    parents              %s\n" % args.parents)
             if args.services:
                 if len(args.services) == 1:
-                            f.write("    hostgroups +%s\n" % args.services[0])
+                            f.write("    hostgroups +         %s\n" %
+                                    args.services[0])
                 else:
                     for loop in range(0, len(args.services)):
                         if loop == 0:
-                            f.write("    hostgroups +%s,\\\n" %
+                            f.write("    hostgroups           +%s,\\\n" %
                                     args.services[loop])
                         elif loop == len(args.services) - 1:
-                            f.write("               %s\n" %
+                            f.write("                         %s\n" %
                                     args.services[loop])
                         else:
-                            f.write("               %s,\\\n" %
+                            f.write("                         %s,\\\n" %
                                     args.services[loop])
+            if args.extra:
+                for loop in range(0, len(args.extra)):
+                    arg = args.extra[loop].split(args.delimiter)[0]
+                    val = args.extra[loop].split(args.delimiter)[1]
+                    space = (25 - 4 - len(arg)) * " "
+                    f.write("    %s%s%s\n" % (arg, space, val))
             f.write("}\n")
             f.close()
     else:

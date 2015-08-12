@@ -14,7 +14,6 @@
 import os
 import sys
 import requests
-import commands
 import argparse
 import tempfile
 from bs4 import BeautifulSoup
@@ -55,29 +54,16 @@ def define_arguments():
                         help="Which branch you want to remove. \
                         You can use -b xxx -b xxx ... to remove a lots of \
                         branchs  at the same time.")
-    parser.add_argument("-p", "--path",
+    parser.add_argument("-P", "--path",
                         dest="path",
+                        default="/home/chengca/faurecia-nagios-configuration",
                         required=False,
                         help="The path of faurecia-nagios-configuration. \
                         Start from \ folder.")
     args = parser.parse_args()
 
     # Change to faurecia-nagios-configuration folder.
-    home = os.getenv("HOME")
-    path = "faurecia-nagios-configuration"
-    if args.path:
-        g_dir = args.path
-    else:
-        output = commands.getoutput("sudo find %s -name %s" % (home, path))
-        # If more than one path, you must assign one.
-        if len(output.split()) != 1:
-            print """%s
-            More than one.
-            Use -p to specify the path is adviced.""" % output
-            sys.exit()
-        else:
-            g_dir = output
-    print "Use: %s" % g_dir
+    g_dir = args.path
     os.chdir(g_dir)
 
     # Get the username.

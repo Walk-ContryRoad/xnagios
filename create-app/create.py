@@ -12,14 +12,13 @@
 ######################################################################
 
 import os
-import sys
 import argparse
-import commands
 
 parser = argparse.ArgumentParser(description="This script used for create a \
                                  new application in nagios.")
 parser.add_argument("-p", "--path",
                     dest="path",
+                    default="/home/chengca/faurecia-nagios-configuration",
                     required=False,
                     help="The path of faurecia-nagios-configuration.")
 parser.add_argument("-a", "--application",
@@ -43,17 +42,7 @@ args = parser.parse_args()
 cur = os.getcwd()
 home = os.getenv("HOME")
 path = "faurecia-nagios-configuration"
-if args.path:
-    g_dir = args.path
-else:
-    output = commands.getoutput("sudo find %s -name %s" % (home, path))
-    if len(output.split()) != 1:
-        print """%s
-        More than one path.
-        Please use -P to specify the path.""" % output
-        sys.exit()
-    else:
-        g_dir = output
+g_dir = args.path
 t_dir = "%s/templates/hosts/app" % (g_dir)
 h_dir = "%s/hostgroups/app" % (g_dir)
 
@@ -65,8 +54,8 @@ def main():
     # Create hostgroups.
     fh = open("%s/%s.cfg" % (h_dir, app), "w")
     fh.write("""define hostgroup {
-    hostgroup_name    app_%s
-    alias             Application - %s
+    hostgroup_name       app_%s
+    alias                Application - %s
 }""" % (app, app.upper()) + "\n")
 
     # Create template.
@@ -77,12 +66,12 @@ def main():
         ft.write("""# Application template for %s
 #
 define host {
-    name          bhtpl_app_%s
-    use           bhtpl_app_generic
-    hostgroups    +app_%s,\\
-                  domain_%s
-    _PROC_DIR     %s
-    register      0
+    name                 bhtpl_app_%s
+    use                  bhtpl_app_generic
+    hostgroups           +app_%s,\\
+                         domain_%s
+    _PROC_DIR            %s
+    register             0
 }
 
 #------------------------------------------------------------------------
@@ -94,11 +83,11 @@ define host {
         ft.write("""# Application template for %s
 #
 define host {
-    name          bhtpl_app_%s
-    use           bhtpl_app_generic
-    hostgroups    +app_%s
-    _PROC_DIR     %s
-    register      0
+    name                 bhtpl_app_%s
+    use                  bhtpl_app_generic
+    hostgroups           +app_%s
+    _PROC_DIR            %s
+    register             0
 }
 
 #------------------------------------------------------------------------
@@ -111,11 +100,11 @@ define host {
         sys = args.system[loop]
         ft.write("""# Base for %s %s servers
 define host {
-    name        bhtpl_app_%s_%s
-    use         bhtpl_app_%s,\\
-                htpl_sys_%s_server
-    alias       %s - Standard %s Server
-    register    0
+    name                 bhtpl_app_%s_%s
+    use                  bhtpl_app_%s,\\
+                         htpl_sys_%s_server
+    alias                %s - Standard %s Server
+    register             0
 }""" % (app, sys, app, sys, app, sys, app.upper(), sys) + "\n" + "\n")
 
 if __name__ == "__main__":

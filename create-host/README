@@ -17,9 +17,11 @@ You can use this script two ways.
 -i specify the address.
 -P specify the parents.
 -s specify the hostgroups.
+-d specify the delimiter.default is @.
+-e specify the extra arguments.
 
 eg:
-./create.py -a ohtpl_area_as -a ohtpl_env_test -a bhtpl_app_microsp_win -n EUEDCSWTH05M -i 127.0.0.1/cabrpvmw0002.brp.ca.corp -p CLUSTER_SAP_FP3 -s sys_vmware_asadcvct0002 -s inc_vmware_esx_memory -P /home/chengca/faurecia-nagios-configuration
+./create.py -a ohtpl_area_as -a ohtpl_env_test -a bhtpl_app_microsp_win -n EUEDCSWTH05M -i 127.0.0.1/cabrpvmw0002.brp.ca.corp -p CLUSTER_SAP_FP3 -s sys_vmware_asadcvct0002 -s inc_vmware_esx_memory -P /home/chengca/faurecia-nagios-configuration -d "@" -e arg1@val1 -e arg2@val2
 
 2. Use file create a lots of hosts at one time.
 -m  0 means use dns as the address
