@@ -48,8 +48,6 @@ def get_branch(pre_branch):
 
 
 def git_checkout(branch, parent):
-    if args.branch:
-
     try:
         cmd = "git checkout %s" % branch
         (status, output) = commands.getstatusoutput(cmd)

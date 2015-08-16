@@ -16,14 +16,9 @@ import os
 import sys
 
 parser = argparse.ArgumentParser(description="Create new hosts in nagios.")
-parser.add_argument("-P", "--path",
-                    dest="path",
-                    default="/home/chengca/faurecia-nagios-configuration",
-                    required=False,
-                    help="Use this specify the path of your git repo.")
-parser.add_argument("-a", "--applications",
+parser.add_argument("-u", "--use",
                     action="append",
-                    dest="applications",
+                    dest="use",
                     required=False,
                     help="The application of host, eg: htpl_app_XX. \
                     you can specify the area and environment.")

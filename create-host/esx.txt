@@ -1,2 +1,0 @@
-debbnvmw0003.bbn.de.corp 10.16.146.15
-debbnvmw0004.bbn.de.corp 10.16.147.15
