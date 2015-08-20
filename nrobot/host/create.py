@@ -16,14 +16,18 @@ import os
 import sys
 
 parser = argparse.ArgumentParser(description="Create new hosts in nagios.")
+<<<<<<< HEAD:create-host/create.py
 parser.add_argument("-P", "--path",
                     dest="path",
                     default="/home/chengca/faurecia-nagios-configuration",
                     required=False,
                     help="Use this specify the path of your git repo.")
 parser.add_argument("-a", "--applications",
+=======
+parser.add_argument("-u", "--use",
+>>>>>>> develop:nrobot/host/create.py
                     action="append",
-                    dest="applications",
+                    dest="use",
                     required=False,
                     help="The application of host, eg: htpl_app_XX. \
                     you can specify the area and environment.")
@@ -43,6 +47,17 @@ parser.add_argument("-s", "--services",
                     required=False,
                     help="The services of the host, \
                     eg: inc_app_XXX. Use this like -s ex1 -s ex2....")
+parser.add_argument("-d", "--delimiter",
+                    dest="delimiter",
+                    type=str,
+                    default="@",
+                    required=False,
+                    help="This is the delimiter for extra arguments.")
+parser.add_argument("-e", "--extra",
+                    action="append",
+                    dest="extra",
+                    required=False,
+                    help="Add the extra arguments. eg: -e arg1@val1 ")
 parser.add_argument("-m", "--mode",
                     dest="mode",
                     required=False,
@@ -62,6 +77,12 @@ parser.add_argument("--force",
                     help="If the file exist force to replace it.")
 args = parser.parse_args()
 
+<<<<<<< HEAD:create-host/create.py
+=======
+cur = os.getcwd()
+home = os.getenv("HOME")
+path = "faurecia-nagios-configuration"
+>>>>>>> develop:nrobot/host/create.py
 g_dir = "%s/hosts" % args.path
 comment = "###########################################"
 
@@ -104,7 +125,20 @@ def main():
                         continue
                 # If a new host, create it.
                 else:
+<<<<<<< HEAD:create-host/create.py
                     create_file(hostfile, templates, hostname, address)
+=======
+                    fw = open(hostfile, "w")
+                    fr = open(templates, "r")
+                    rlines = fr.readlines()
+                    rlines.insert(1, "    host_name            %s\n" %
+                                  hostname)
+                    rlines.insert(2, "    address              %s\n" % address)
+                    for line in rlines:
+                        fw.write(line)
+                    fr.close()
+                    fw.close()
+>>>>>>> develop:nrobot/host/create.py
             f.close()
 
     # Use the command line options not the file.
@@ -118,36 +152,54 @@ def main():
             print "%s%s\n" % (comment, comment)
         else:
             f = open(hostfile, "a")
+<<<<<<< HEAD:create-host/create.py
             f.write("define host {\n")
+=======
+            f.write("""define host {
+    host_name            %s
+    address              %s\n""" % (hostname, address))
+>>>>>>> develop:nrobot/host/create.py
             if len(args.applications) == 1:
-                f.write("    use        %s\n" % args.applications[0])
+                f.write("    use                  %s\n" % args.applications[0])
             else:
                 for loop in range(0, len(args.applications)):
                     if loop == 0:
-                        f.write("    use        %s,\\\n" %
+                        f.write("    use                  %s,\\\n" %
                                 args.applications[loop])
                     elif loop == len(args.applications) - 1:
-                        f.write("               %s\n" %
+                        f.write("                         %s\n" %
                                 args.applications[loop])
                     else:
-                        f.write("               %s,\\\n" %
+                        f.write("                         %s,\\\n" %
                                 args.applications[loop])
+<<<<<<< HEAD:create-host/create.py
             f.write("""    host_name  %s
     address    %s\n""" % (hostname, address))
+=======
+            if args.parents:
+                f.write("    parents              %s\n" % args.parents)
+>>>>>>> develop:nrobot/host/create.py
             if args.services:
                 if len(args.services) == 1:
-                            f.write("    hostgroups +%s\n" % args.services[0])
+                            f.write("    hostgroups +         %s\n" %
+                                    args.services[0])
                 else:
                     for loop in range(0, len(args.services)):
                         if loop == 0:
-                            f.write("    hostgroups +%s,\\\n" %
+                            f.write("    hostgroups           +%s,\\\n" %
                                     args.services[loop])
                         elif loop == len(args.services) - 1:
-                            f.write("               %s\n" %
+                            f.write("                         %s\n" %
                                     args.services[loop])
                         else:
-                            f.write("               %s,\\\n" %
+                            f.write("                         %s,\\\n" %
                                     args.services[loop])
+            if args.extra:
+                for loop in range(0, len(args.extra)):
+                    arg = args.extra[loop].split(args.delimiter)[0]
+                    val = args.extra[loop].split(args.delimiter)[1]
+                    space = (25 - 4 - len(arg)) * " "
+                    f.write("    %s%s%s\n" % (arg, space, val))
             f.write("}\n")
             f.close()
     else:

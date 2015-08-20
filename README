@@ -8,6 +8,12 @@ One is command line, and another is GUI.
 The program trying to filter data from redmine and trying to config the nagios automatic.
 And deploy the configuration to dev/inc automatic.
 
+------
+How to
+------
+
+main.py call all the subprocess to handle the request.
+
 --------
 progress
 --------

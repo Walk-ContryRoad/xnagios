@@ -14,12 +14,12 @@
 import os
 import sys
 import argparse
-import commands
 
 parser = argparse.ArgumentParser(description="This script used for remove \
                                  host from nagios.")
-parser.add_argument("-p", "--path",
+parser.add_argument("-P", "--path",
                     dest="path",
+                    default="/home/chengca/faurecia-nagios-configuration",
                     required=False,
                     help="The path of faurecia-nagios-configuration.")
 parser.add_argument("-n", "--name",
@@ -36,17 +36,7 @@ args = parser.parse_args()
 cur = os.getcwd()
 home = os.getenv("HOME")
 path = "faurecia-nagios-configuration"
-if args.path:
-    g_dir = "%s/hosts" % args.path
-else:
-    output = commands.getoutput("sudo find %s -name %s" % (home, path))
-    if len(output.split()) != 1:
-        print """%s
-        More than one path.
-        Please use -P to specify the path.""" % output
-        sys.exit()
-    else:
-        g_dir = "%s/hosts" % output
+g_dir = "%s/hosts" % args.path
 comment = "#########################################"
 
 
