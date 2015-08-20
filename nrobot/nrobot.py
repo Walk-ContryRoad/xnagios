@@ -76,7 +76,7 @@ class NRobot(Application, Deploy):
 
 
 def main():
-    robot = NRobot()
+    robot = NRobot("nagiosauto", "1.0", "Config nagios automatic")
     os.chdir(robot.args.path)
     if robot.args.create_template:
         robot.create_branch(robot.args.branch)
