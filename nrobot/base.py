@@ -47,8 +47,6 @@ class NagiosAuto(object):
         if self.__class__.__name__ == "NagiosAuto":
             self.logger.debug("==== END DEBUG ====")
 
-        self.logger.debug("leave base")
-
     def __define_module_options(self):
         self.parser = argparse.ArgumentParser(description=self.description)
         # Define the basic options here.
@@ -73,26 +71,34 @@ class NagiosAuto(object):
                                         help="The path of \
                                         faurecia-nagios-configuration.")
 
+    def input(self, tips):
+        positive = ["Y", "y", "yes", "YES"]
+        negtive = ["N", "n", "no", "NO"]
+        choice = raw_input(tips)
+        if choice in positive:
+            return 0
+        elif choice in negtive:
+            return 1
+        else:
+            self.error("Error input: please use regular char.")
+
     def error(self, msg):
         raise NagiosAutoError(msg)
 
-    def warning(self, msg):
-        raise NagiosAutoWarning(msg)
-
     def not_exist(self, msg):
-        comment = "+++++++++++++++++++++++++++++++++++++++++++++++"
+        comment = "--------------------------------------"
         print "%s%s" % (comment, comment)
         print "%s not exist." % msg
+        print "%s%s" % (comment, comment)
+
+    def already_exist(self, msg):
+        comment = "++++++++++++++++++++++++++++++++++++++"
+        print "%s%s" % (comment, comment)
+        print "%s already exist." % msg
         print "%s%s" % (comment, comment)
 
 
 class NagiosAutoError(Exception):
     def __init__(self, msg):
         print "Error - %s" % msg
-        raise SystemExit(1)
-
-
-class NagiosAutoWarning(Exception):
-    def __init__(self, msg):
-        print "Warning - %s" % msg
-        raise SystemExit(2)
+        raise SystemExit(-1)

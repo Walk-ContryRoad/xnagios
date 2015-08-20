@@ -11,23 +11,33 @@
 # Description:
 ######################################################################
 
-# from base import NagiosAuto
+import os
 from application.application import Application
+from deploy.deploy import Deploy
 # from host.host import Host
 # from service.service import Service
-# from deploy.deploy import Deploy
 # from web.web import Web
 
 
-class NRobot(Application):
+class NRobot(Application, Deploy):
     def define_options(self):
         super(NRobot, self).define_options()
+        self.required_args.add_argument("--cb",
+                                        action="store_true",
+                                        dest="create_branch",
+                                        required=False,
+                                        help="Specify to create or \
+                                        checkout branch.")
+        self.required_args.add_argument("--db",
+                                        action="store_true",
+                                        dest="delete_branch",
+                                        required=False,
+                                        help="Specify to delete branch.")
         self.required_args.add_argument("--cg",
                                         action="store_true",
                                         dest="create_hostgroup",
                                         required=False,
-                                        help="Specify to create new \
-                                        application.")
+                                        help="Specify to create application.")
         self.required_args.add_argument("--dg",
                                         action="store_true",
                                         dest="delete_hostgroup",
@@ -37,43 +47,45 @@ class NRobot(Application):
                                         action="store_true",
                                         dest="create_template",
                                         required=False,
-                                        help="Specify to create new template.")
-        self.required_args.add_argument("-dt",
+                                        help="Specify to create template.")
+        self.required_args.add_argument("--dt",
                                         action="store_true",
                                         dest="delete_template",
                                         required=False,
                                         help="Specify to delete template.")
-        self.required_args.add_argument("-ch",
+        self.required_args.add_argument("--ch",
                                         action="store_true",
                                         dest="create_host",
                                         required=False,
                                         help="Specify to create host.")
-        self.required_args.add_argument("-dh",
+        self.required_args.add_argument("--dh",
                                         action="store_true",
                                         dest="delete_host",
                                         required=False,
                                         help="Specify to delete host.")
-        self.required_args.add_argument("-cs",
+        self.required_args.add_argument("--cs",
                                         action="store_true",
                                         dest="create_service",
                                         required=False,
                                         help="Specify to create service.")
-        self.required_args.add_argument("-ds",
+        self.required_args.add_argument("--ds",
                                         action="store_true",
                                         dest="delete_service",
                                         required=False,
-                                        help="Specify to delete template.")
+                                        help="Specify to delete service.")
 
 
 def main():
     robot = NRobot()
-    robot.logger.debug("in main")
-
-    if robot.args.create_hostgroup:
+    os.chdir(robot.args.path)
+    if robot.args.create_template:
+        robot.create_branch(robot.args.branch)
         robot.create_hostgroup()
-    elif robot.args.delete_hostgroup:
-        robot.delete_hostgroup()
+        robot.create_template()
+    elif robot.args.delete_branch:
+        robot.delete_branch(robot.args.branch)
 
+    robot.logger.debug("==== END DEBUG ====")
 
 
 if __name__ == "__main__":
