@@ -20,16 +20,16 @@ import os
 class NagiosAuto(object):
     # Initialize a new class.
     def __init__(self, name=None, version='', description=''):
-        # Init the logger.
-        logging.basicConfig(format='[%(levelname)s] (%(module)s) %(message)s')
-        self.logger = logging.getLogger("NagiosAuto")
-        self.logger.setLevel(logging.INFO)
-
         # Init the basic information.
         self.name = os.path.basename(sys.argv[0]) if not name else name
         self.version = version
         self.description = description
         self.path = "/home/chengca/faurecia-nagios-configuration"
+
+        # Init the logger.
+        logging.basicConfig(format='[%(levelname)s] (%(module)s) %(message)s')
+        self.logger = logging.getLogger("NagiosAuto")
+        self.logger.setLevel(logging.INFO)
 
         # Init the arguments.
         self.__define_module_options()
@@ -38,11 +38,19 @@ class NagiosAuto(object):
 
         if self.args.debug:
             self.logger.setLevel(logging.DEBUG)
-
         self.logger.debug("==== BEGIN DEBUG ====")
         self.logger.debug("name: %s", self.name)
         self.logger.debug("version: %s", self.version)
         self.logger.debug("description: %s", self.description)
+
+        # Get the path.
+        self.logger.debug("self.path = {}".format(self.path))
+        self.cur = os.getcwd().replace("/nrobot", "")
+        self.conf = os.getcwd().replace("/nrobot", "/config")
+        self.logger.debug("self.cur = {}".format(self.cur))
+        self.logger.debug("self.conf = {}".format(self.conf))
+
+
 
         if self.__class__.__name__ == "NagiosAuto":
             self.logger.debug("==== END DEBUG ====")
@@ -54,6 +62,10 @@ class NagiosAuto(object):
                                  action="store_true",
                                  dest="debug",
                                  help="Show debug information.")
+        self.parser.add_argument("-a", "--application",
+                                 dest="application",
+                                 required=False,
+                                 help="Application name.")
         self.required_args = self.parser.add_argument_group("Subprocess.")
 
     def __parse_options(self):

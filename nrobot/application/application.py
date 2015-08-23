@@ -19,9 +19,9 @@ class Application(NagiosAuto):
     def __init__(self, *args, **kwargs):
         super(Application, self).__init__(*args, **kwargs)
 
-        self.cur = os.getcwd() + "/application"
-        self.hostgroup = "%s/hostgroup.cfg" % self.cur
-        self.template = "%s/template.cfg" % self.cur
+        self.app_conf = self.conf + "/application"
+        self.hostgroup = self.app_conf + "/hostgroup.cfg"
+        self.template = self.app_conf + "/template.cfg"
         self.h_dir = "%s/hostgroups/app/" % self.args.path
         self.t_dir = "%s/templates/hosts/app/" % self.args.path
         if self.args.application:
@@ -34,10 +34,6 @@ class Application(NagiosAuto):
 
     def define_options(self):
         super(Application, self).define_options()
-        self.parser.add_argument("-a", "--application",
-                                 dest="application",
-                                 required=False,
-                                 help="New application name.")
         self.parser.add_argument("-d", "--domain",
                                  dest="domain",
                                  required=False,
@@ -59,7 +55,7 @@ class Application(NagiosAuto):
             fhw = open(self.hostgroupfile, "w")
             for line in lines:
                 if "%s" in line:
-                    fhw.write(line % self.args.application)
+                    fhw.write(line % self.application)
                 else:
                     fhw.write(line)
             fhr.close()

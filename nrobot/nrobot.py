@@ -12,6 +12,7 @@
 ######################################################################
 
 import os
+import sys
 from application.application import Application
 from deploy.deploy import Deploy
 # from host.host import Host
@@ -78,12 +79,12 @@ class NRobot(Application, Deploy):
 def main():
     robot = NRobot("nagiosauto", "1.0", "Config nagios automatic")
     os.chdir(robot.args.path)
-    if robot.args.create_template:
-        robot.create_branch(robot.args.branch)
-        robot.create_hostgroup()
-        robot.create_template()
-    elif robot.args.delete_branch:
-        robot.delete_branch(robot.args.branch)
+
+    # What to do.
+    argv = sys.argv[0]
+    getcwd = os.getcwd()
+    robot.logger.debug("argv[0]: {}".format(argv))
+    robot.logger.debug("os.getcwd: {}".format(getcwd))
 
     robot.logger.debug("==== END DEBUG ====")
 

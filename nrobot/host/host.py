@@ -23,6 +23,7 @@ class Host(NagiosAuto):
 
     def define_options(self):
         super(Host, self).define_options()
+
         self.parser.add_argument("-m", "--mode",
                                  dest="mode",
                                  required=False,
@@ -30,4 +31,15 @@ class Host(NagiosAuto):
         self.parser.add_argument("-f", "--files",
                                  action="append",
                                  dest="files",
-                                 help=")
+                                 help="Read hostname ip and templates from \
+                                 this file.Without the prefix. \
+                                 eg: -f app1 -f app2. \
+                                 Read configuration from app1.cfg. \
+                                 Read hostname and ip from app1.txt.")
+
+    def get_host(self):
+
+    def get_area(self):
+
+    def create_host(self):
+
