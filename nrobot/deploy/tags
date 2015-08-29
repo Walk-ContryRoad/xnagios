@@ -1,0 +1,19 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+Deploy	deploy.py	/^class Deploy(NagiosAuto):$/;"	kind:class	inherits:NagiosAuto
+__init__	deploy.py	/^    def __init__(self, *args, **kwargs):$/;"	kind:member	access:public
+asyn_branch	deploy.py	/^    def asyn_branch(self, branch, output):$/;"	kind:member	access:public
+commit_branch	deploy.py	/^    def commit_branch(self):$/;"	kind:member	access:public
+create_branch	deploy.py	/^    def create_branch(self):$/;"	kind:member	access:public
+create_one_branch	deploy.py	/^    def create_one_branch(self, branch):$/;"	kind:member	access:public
+define_options	deploy.py	/^    def define_options(self):$/;"	kind:member	access:public
+delete_branch	deploy.py	/^    def delete_branch(self):$/;"	kind:member	access:public
+delete_one_branch	deploy.py	/^    def delete_one_branch(self, branch):$/;"	kind:member	access:public
+deploy_branch	deploy.py	/^    def deploy_branch(self):$/;"	kind:member	access:public
+merge_branch	deploy.py	/^    def merge_branch(self, branch):$/;"	kind:member	access:public
+push_branch	deploy.py	/^    def push_branch(self, branch, user):$/;"	kind:member	access:public
+status_branch	deploy.py	/^    def status_branch(self, branch):$/;"	kind:member	access:public

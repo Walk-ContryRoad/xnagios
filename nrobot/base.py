@@ -18,6 +18,7 @@ import os
 
 
 class NagiosAuto(object):
+    """This is the base class for this project."""
     # Initialize a new class.
     def __init__(self, name=None, version='', description=''):
         # Init the basic information.
@@ -44,37 +45,39 @@ class NagiosAuto(object):
         self.logger.debug("description: %s", self.description)
 
         # Get the path.
-        self.logger.debug("self.path = {}".format(self.path))
         self.cur = os.getcwd().replace("/nrobot", "")
         self.conf = os.getcwd().replace("/nrobot", "/config")
+        self.logger.debug("self.path = {}".format(self.path))
         self.logger.debug("self.cur = {}".format(self.cur))
         self.logger.debug("self.conf = {}".format(self.conf))
-
-
 
         if self.__class__.__name__ == "NagiosAuto":
             self.logger.debug("==== END DEBUG ====")
 
     def __define_module_options(self):
+        """Define common arguments for all class."""
         self.parser = argparse.ArgumentParser(description=self.description)
         # Define the basic options here.
         self.parser.add_argument("--debug",
                                  action="store_true",
                                  dest="debug",
-                                 help="Show debug information.")
-        self.parser.add_argument("-a", "--application",
-                                 dest="application",
                                  required=False,
-                                 help="Application name.")
+                                 help="Show debug information.")
+        self.parser.add_argument("--force",
+                                 action="store_true",
+                                 dest="force",
+                                 required=False,
+                                 help="If file exist, use this to rewrite it.")
         self.required_args = self.parser.add_argument_group("Subprocess.")
 
     def __parse_options(self):
         try:
             self.args = self.parser.parse_args()
         except Exception as e:
-            self.error("Error __parse_options : %s" % e)
+            self.error("__parse_options : %s" % e)
 
     def define_options(self):
+        """Define function arguments for this plugin."""
         # This arguments for all function.
         self.required_args.add_argument("-P", "--path",
                                         dest="path",
@@ -84,6 +87,7 @@ class NagiosAuto(object):
                                         faurecia-nagios-configuration.")
 
     def input(self, tips):
+        """Used for choice your options."""
         positive = ["Y", "y", "yes", "YES"]
         negtive = ["N", "n", "no", "NO"]
         choice = raw_input(tips)
@@ -92,18 +96,21 @@ class NagiosAuto(object):
         elif choice in negtive:
             return 1
         else:
-            self.error("Error input: please use regular char.")
+            self.error("input: please use regular char.")
 
     def error(self, msg):
+        """When error print some message and exit the program."""
         raise NagiosAutoError(msg)
 
     def not_exist(self, msg):
+        """When remove file and it's not exist take a warning."""
         comment = "--------------------------------------"
         print "%s%s" % (comment, comment)
         print "%s not exist." % msg
         print "%s%s" % (comment, comment)
 
     def already_exist(self, msg):
+        """When create file and it's exist take a warning."""
         comment = "++++++++++++++++++++++++++++++++++++++"
         print "%s%s" % (comment, comment)
         print "%s already exist." % msg

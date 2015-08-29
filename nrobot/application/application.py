@@ -16,7 +16,10 @@ from base import NagiosAuto
 
 
 class Application(NagiosAuto):
+    """This class used to create new hostgroup and template for a new
+    application in nagios."""
     def __init__(self, *args, **kwargs):
+        """Define variables"""
         super(Application, self).__init__(*args, **kwargs)
 
         self.app_conf = self.conf + "/application"
@@ -24,16 +27,17 @@ class Application(NagiosAuto):
         self.template = self.app_conf + "/template.cfg"
         self.h_dir = "%s/hostgroups/app/" % self.args.path
         self.t_dir = "%s/templates/hosts/app/" % self.args.path
-        if self.args.application:
-            self.application = self.args.application
-            self.hostgroupfile = self.h_dir + self.application + ".cfg"
-            self.templatefile = self.t_dir + self.application + ".cfg"
 
         if self.__class__.__name__ == "Application":
             self.logger.debug("==== END DEBUG ====")
 
     def define_options(self):
+        """Define options for this class."""
         super(Application, self).define_options()
+        self.parser.add_argument("-a", "--application",
+                                 dest="application",
+                                 required=False,
+                                 help="The application name.")
         self.parser.add_argument("-d", "--domain",
                                  dest="domain",
                                  required=False,
@@ -47,6 +51,7 @@ class Application(NagiosAuto):
                                  Multity system use -s system1 -s system2 ...")
 
     def create_hostgroup(self):
+        """Create hostgroup."""
         if os.path.isfile(self.hostgroupfile):
             self.already_exist(self.hostgroupfile)
         else:
@@ -62,6 +67,7 @@ class Application(NagiosAuto):
             fhw.close()
 
     def create_template(self):
+        """Create template."""
         if os.path.isfile(self.templatefile):
             self.already_exist(self.templatefile)
         else:
@@ -107,6 +113,22 @@ class Application(NagiosAuto):
                         else:
                             ftw.write(line)
 
+    def create_application(self):
+        try:
+            if self.args.application:
+                self.application = self.args.application
+                self.hostgroupfile = self.h_dir + self.application + ".cfg"
+                self.templatefile = self.t_dir + self.application + ".cfg"
+                self.logger.debug("hostgroupfile: {}".
+                                  format(self.hostgroupfile))
+                self.logger.debug("templatefile: {}".format(self.templatefile))
+                self.create_hostgroup()
+                self.create_template()
+            else:
+                self.error("Please use -a specify application.")
+        except Exception as e:
+            self.error("create_application: %s" % e)
+
     def delete_hostgroup(self):
         if not os.path.isfile(self.hostgroupfile):
             self.not_exist(self.hostgroupfile)
@@ -114,7 +136,7 @@ class Application(NagiosAuto):
             try:
                 os.remove(self.hostgroupfile)
             except Exception as e:
-                self.error("Error delete_hostgroup: %s" % e)
+                self.error("delete_hostgroup: %s" % e)
 
     def delete_template(self):
         if not os.path.isfile(self.templatefile):
@@ -123,4 +145,20 @@ class Application(NagiosAuto):
             try:
                 os.remove(self.templatefile)
             except Exception as e:
-                self.error("Error delete_template: %s" % e)
+                self.error("delete_template: %s" % e)
+
+    def delete_application(self):
+        try:
+            if self.args.application:
+                self.application = self.args.application
+                self.hostgroupfile = self.h_dir + self.application + ".cfg"
+                self.templatefile = self.t_dir + self.application + ".cfg"
+                self.logger.debug("hostgroupfile: {}".
+                                  format(self.hostgroupfile))
+                self.logger.debug("templatefile: {}".format(self.templatefile))
+                self.delete_hostgroup()
+                self.delete_template()
+            else:
+                self.error("Please use -a specify application.")
+        except Exception as e:
+            self.error("delete_application: %s" % e)

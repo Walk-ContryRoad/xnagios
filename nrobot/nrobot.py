@@ -12,15 +12,14 @@
 ######################################################################
 
 import os
-import sys
-from application.application import Application
 from deploy.deploy import Deploy
-# from host.host import Host
-# from service.service import Service
+from application.application import Application
+from host.host import Host
+from service.service import Service
 # from web.web import Web
 
 
-class NRobot(Application, Deploy):
+class NRobot(Application, Host, Service, Deploy):
     def define_options(self):
         super(NRobot, self).define_options()
         self.required_args.add_argument("--cb",
@@ -34,26 +33,16 @@ class NRobot(Application, Deploy):
                                         dest="delete_branch",
                                         required=False,
                                         help="Specify to delete branch.")
-        self.required_args.add_argument("--cg",
+        self.required_args.add_argument("--ca",
                                         action="store_true",
-                                        dest="create_hostgroup",
+                                        dest="create_application",
                                         required=False,
-                                        help="Specify to create application.")
-        self.required_args.add_argument("--dg",
+                                        help="Specify to create hostgroup.")
+        self.required_args.add_argument("--da",
                                         action="store_true",
-                                        dest="delete_hostgroup",
+                                        dest="delete_application",
                                         required=False,
-                                        help="Specify to delete application.")
-        self.required_args.add_argument("--ct",
-                                        action="store_true",
-                                        dest="create_template",
-                                        required=False,
-                                        help="Specify to create template.")
-        self.required_args.add_argument("--dt",
-                                        action="store_true",
-                                        dest="delete_template",
-                                        required=False,
-                                        help="Specify to delete template.")
+                                        help="Specify to delete hostgroup.")
         self.required_args.add_argument("--ch",
                                         action="store_true",
                                         dest="create_host",
@@ -80,11 +69,38 @@ def main():
     robot = NRobot("nagiosauto", "1.0", "Config nagios automatic")
     os.chdir(robot.args.path)
 
-    # What to do.
-    argv = sys.argv[0]
-    getcwd = os.getcwd()
-    robot.logger.debug("argv[0]: {}".format(argv))
-    robot.logger.debug("os.getcwd: {}".format(getcwd))
+    # Create new application.
+    if robot.args.create_application:
+        robot.create_branch()
+        robot.create_application()
+        robot.create_host()
+        robot.commit_branch()
+        robot.deploy_branch()
+    elif robot.args.delete_application:
+        robot.create_branch()
+        robot.delete_application()
+        robot.commit_branch()
+        robot.deploy_branch()
+    # Create new host.
+    elif robot.args.create_host:
+        robot.create_branch()
+        robot.create_host()
+        robot.commit_branch()
+        robot.deploy_branch()
+    # Remove host.
+    elif robot.args.delete_host:
+        robot.create_branch()
+        robot.delete_host()
+        robot.commit_branch()
+        robot.deploy_branch()
+    elif robot.args.create_service:
+        pass
+    elif robot.args.delete_service:
+        pass
+    elif robot.args.create_branch:
+        robot.create_branch()
+    elif robot.args.delete_branch:
+        robot.delete_branch()
 
     robot.logger.debug("==== END DEBUG ====")
 
