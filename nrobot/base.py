@@ -116,6 +116,17 @@ class NagiosAuto(object):
         print "%s already exist." % msg
         print "%s%s" % (comment, comment)
 
+    def delete_blank_line(self, src, des):
+        """Delete the blank line in a file."""
+        inf = open(src, "r")
+        out = open(des, "w")
+        lines = inf.readlines()
+        for line in lines:
+            if line.split():
+                out.writelines(line)
+        inf.close()
+        out.close()
+
 
 class NagiosAutoError(Exception):
     def __init__(self, msg):

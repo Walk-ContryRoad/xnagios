@@ -88,7 +88,7 @@ class Deploy(NagiosAuto):
     def commit_one_branch(self, comment):
         """Use git add and git commit to commit changes."""
         try:
-            cmd = "git add -A ."
+            cmd = "git add -A"
             (status, output) = commands.getstatusoutput(cmd)
             self.logger.debug("{0}: {1}".format(cmd, output))
             if not status:
@@ -105,6 +105,7 @@ class Deploy(NagiosAuto):
                 cmd = "git push -u origin %s:%s" % (branch, remote_branch)
             elif (not branch) and (not remote_branch):
                 cmd = "git push"
+            # Delete remote branch.
             elif (not branch) and remote_branch:
                 cmd = "git push -u origin :%s" % remote_branch
             (status, output) = commands.getstatusoutput(cmd)
@@ -189,7 +190,15 @@ class Deploy(NagiosAuto):
         """Delete branch from -b."""
         try:
             if self.args.branch:
-                self.delete_one_branch(self.branch)
+                choice = self.input("Are you sure delete %s? " % self.branch)
+                if choice == 0:
+                    self.delete_one_branch(self.branch)
+                choice = self.input("Are you sure delete %s? " %
+                                    self.remote_branch)
+                if choice == 0:
+                    output = self.push_one_branch("", self.remote_branch)
+                    if "error" in output:
+                        self.not_exist(self.remote_branch)
             else:
                 self.error("Please use -b specify the branch number")
         except Exception as e:
@@ -197,10 +206,12 @@ class Deploy(NagiosAuto):
 
     def commit_branch(self):
         try:
-            if self.args.comment:
-                self.commit_one_branch(self.args.comment)
-            else:
-                self.error("Please use -c to specify commit comment.")
+            choice = self.input("Are you sure commit this changes? ")
+            if choice == 0:
+                if self.args.comment:
+                    self.commit_one_branch(self.args.comment)
+                else:
+                    self.error("Please use -c to specify commit comment.")
         except Exception as e:
             self.error("commit_branch: %s" % e)
 
@@ -213,13 +224,17 @@ class Deploy(NagiosAuto):
                 output = self.create_one_branch(branch)
                 self.asyn_branch(branch, output)
                 self.merge_branch(self.branch)
-                self.push_branch("", "")
-                try:
-                    cmd = "fab gearman.deploy"
-                    os.system(cmd)
-                    self.logger.debug("{0}: ".format(cmd))
-                except Exception as e:
-                    self.error("deploy_branch: %s" % e)
+                choice = self.input("Are you sure push to %s? " % branch)
+                if choice == 0:
+                    self.push_one_branch("", "")
+                choice = self.input("Are you sure deploy to %s? " % branch)
+                if choice == 0:
+                    try:
+                        cmd = "fab gearman.deploy"
+                        os.system(cmd)
+                        self.logger.debug("{0}: ".format(cmd))
+                    except Exception as e:
+                        self.error("deploy_branch: %s" % e)
         # If everything is ok in nagios put it to center.
         choice = self.input("Are you sure push %s to center? " % self.branch)
         if choice == 0:

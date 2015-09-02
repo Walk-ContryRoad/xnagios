@@ -12,15 +12,16 @@ And deploy the configuration to dev/inc automatic.
 How to
 ------
 
-main.py call all the subprocess to handle the request.
+./nrobot --help
 
 --------
-progress
+Progress
 --------
 
-Now, some of the functions have finished for command line.
+Now, create/remove application and create/remove host have finished.
 But you have to do something by your hands.
-Filter data from redmine havn't finished.
+Create/remove services is in progress.
+Filter data from redmine and GUI havn't finished.
 
 -------
 Join us

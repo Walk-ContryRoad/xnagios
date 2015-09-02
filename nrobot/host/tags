@@ -6,53 +6,11 @@
 !_TAG_PROGRAM_VERSION	5.9~svn20110310	//
 Host	host.py	/^class Host(NagiosAuto):$/;"	kind:class	inherits:NagiosAuto
 __init__	host.py	/^    def __init__(self, *args, **kwargs):$/;"	kind:member	access:public
-action	create.py	/^                    action="append",$/;"	kind:variable
-action	create.py	/^                    action="store_true",$/;"	kind:variable
-action	remove.py	/^                    action="append",$/;"	kind:variable
-args	remove.py	/^args = parser.parse_args()$/;"	kind:variable
-comment	create.py	/^comment = "###########################################"$/;"	kind:variable
-comment	remove.py	/^comment = "#########################################"$/;"	kind:variable
-create_file	create.py	/^def create_file(hostfile, templates, hostname, address):$/;"	kind:function	access:public
 create_host	host.py	/^    def create_host(self):$/;"	kind:member	access:public
-cur	create.py	/^cur = os.getcwd()$/;"	kind:variable
-cur	remove.py	/^cur = os.getcwd()$/;"	kind:variable
-default	create.py	/^                    default="@",$/;"	kind:variable
-default	remove.py	/^                    default="\/home\/chengca\/faurecia-nagios-configuration",$/;"	kind:variable
 define_options	host.py	/^    def define_options(self):$/;"	kind:member	access:public
-dest	create.py	/^                    dest="delimiter",$/;"	kind:variable
-dest	create.py	/^                    dest="extra",$/;"	kind:variable
-dest	create.py	/^                    dest="files",$/;"	kind:variable
-dest	create.py	/^                    dest="force",$/;"	kind:variable
-dest	create.py	/^                    dest="ip",$/;"	kind:variable
-dest	create.py	/^                    dest="mode",$/;"	kind:variable
-dest	create.py	/^                    dest="name",$/;"	kind:variable
-dest	create.py	/^                    dest="services",$/;"	kind:variable
-dest	create.py	/^                    dest="use",$/;"	kind:variable
-dest	remove.py	/^                    dest="file",$/;"	kind:variable
-dest	remove.py	/^                    dest="name",$/;"	kind:variable
-dest	remove.py	/^                    dest="path",$/;"	kind:variable
-g_dir	create.py	/^g_dir = "%s\/hosts" % args.path$/;"	kind:variable
-g_dir	remove.py	/^g_dir = "%s\/hosts" % args.path$/;"	kind:variable
+delete_host	host.py	/^    def delete_host(self):$/;"	kind:member	access:public
 get_area	host.py	/^    def get_area(self, hostname):$/;"	kind:member	access:public
-help	create.py	/^                    Use it like this -f file1 -f file2 ....")$/;"	kind:variable
-help	create.py	/^                    eg: PLWLBVMW0001, lower case or upper case is ok.")$/;"	kind:variable
-help	create.py	/^                    eg: inc_app_XXX. Use this like -s ex1 -s ex2....")$/;"	kind:variable
-help	create.py	/^                    eg: plwlbvmw0001.wlb.pl.corp or 10.135.17.116.")$/;"	kind:variable
-help	create.py	/^                    help="Add the extra arguments. eg: -e arg1@val1 ")$/;"	kind:variable
-help	create.py	/^                    help="If the file exist force to replace it.")$/;"	kind:variable
-help	create.py	/^                    help="This is the delimiter for extra arguments.")$/;"	kind:variable
-help	create.py	/^                    you can specify the area and environment.")$/;"	kind:variable
-help	remove.py	/^                    help="The path of faurecia-nagios-configuration.")$/;"	kind:variable
-help	remove.py	/^                    help="This is the hostname file you want to remove.")$/;"	kind:variable
-help	remove.py	/^                    help="This is the hostname you want ot remove.")$/;"	kind:variable
-home	create.py	/^home = os.getenv("HOME")$/;"	kind:variable
-home	remove.py	/^home = os.getenv("HOME")$/;"	kind:variable
-main	create.py	/^def main():$/;"	kind:function	access:public
-main	remove.py	/^def main():$/;"	kind:function	access:public
-parser	remove.py	/^                                 host from nagios.")$/;"	kind:variable
-path	create.py	/^path = "faurecia-nagios-configuration"$/;"	kind:variable
-path	remove.py	/^path = "faurecia-nagios-configuration"$/;"	kind:variable
-required	create.py	/^                    required=False,$/;"	kind:variable
-required	remove.py	/^                    required=False,$/;"	kind:variable
-type	create.py	/^                    type=str,$/;"	kind:variable
-write_host	host.py	/^    def write_host(self, application):$/;"	kind:member	access:public
+get_mii_site	host.py	/^    def get_mii_site(self, hostname):$/;"	kind:member	access:public
+get_types	host.py	/^    def get_types(self, types):$/;"	kind:member	access:public
+get_vcenter	host.py	/^    def get_vcenter(self, vcenter):$/;"	kind:member	access:public
+write_one_host	host.py	/^    def write_one_host(self, hostfile, lines, vcenter,$/;"	kind:member	access:public

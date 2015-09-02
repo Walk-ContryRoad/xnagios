@@ -15,11 +15,12 @@ import os
 from deploy.deploy import Deploy
 from application.application import Application
 from host.host import Host
-from service.service import Service
+# from service.service import Service
 # from web.web import Web
 
 
-class NRobot(Application, Host, Service, Deploy):
+# class NRobot(Application, Host, Service, Deploy):
+class NRobot(Application, Host, Deploy):
     def define_options(self):
         super(NRobot, self).define_options()
         self.required_args.add_argument("--cb",
@@ -32,27 +33,32 @@ class NRobot(Application, Host, Service, Deploy):
                                         action="store_true",
                                         dest="delete_branch",
                                         required=False,
-                                        help="Specify to delete branch.")
+                                        help="Specify to delete a local \
+                                        branch or a remote branch.")
         self.required_args.add_argument("--ca",
                                         action="store_true",
                                         dest="create_application",
                                         required=False,
-                                        help="Specify to create hostgroup.")
+                                        help="Specify to create application.")
         self.required_args.add_argument("--da",
                                         action="store_true",
                                         dest="delete_application",
                                         required=False,
-                                        help="Specify to delete hostgroup.")
+                                        help="Specify to delete application.")
         self.required_args.add_argument("--ch",
                                         action="store_true",
                                         dest="create_host",
                                         required=False,
-                                        help="Specify to create host.")
+                                        help="Specify to create host. Use \
+                                        -t to Specify the host file and \
+                                        template file.")
         self.required_args.add_argument("--dh",
                                         action="store_true",
                                         dest="delete_host",
                                         required=False,
-                                        help="Specify to delete host.")
+                                        help="Specify to delete host. Write \
+                                        the hostname you want to delete in \
+                                        config/host/host.txt")
         self.required_args.add_argument("--cs",
                                         action="store_true",
                                         dest="create_service",

@@ -28,13 +28,6 @@ class Host(NagiosAuto):
         self.host_conf = self.conf + "/host/"
         self.area_conf = self.conf + "/area/"
 
-        if self.args.file:
-            self.file = self.args.file
-        else:
-            self.file = self.host_conf + "host.txt"
-        self.fr = open(self.file, "r")
-        self.lines = self.fr.readlines()
-
         self.area_list = ["as", "us", "eu"]
 
         if self.__class__.__name__ == "Host":
@@ -43,121 +36,137 @@ class Host(NagiosAuto):
     def define_options(self):
         """Define some options used for create host."""
         super(Host, self).define_options()
-        self.parser.add_argument("-t", "--type",
+        self.parser.add_argument("-t", "--types",
                                  action="append",
-                                 dest="type",
+                                 dest="types",
                                  required=False,
-                                 help="The host type, eg: ['ad', 'mii', \
+                                 help="The host types, eg: ['ad', 'mii', \
                                  'ijcore', 'mii_win-primary', 'mii_win-bck']. \
-                                 Read template from type.cfg and \
-                                 read hostname and ip address from type.txt. \
-                                 Use type@mode for normal host. \
+                                 Read template from types.cfg and \
+                                 read hostname and ip address from types.txt. \
+                                 Use types@mode for normal host. \
                                  mode=0 use dns as address. \
                                  mode=1 use ip as address.")
         self.parser.add_argument("-v", "--vcenter",
                                  dest="vcenter",
                                  required=False,
                                  help="Vcenter for mii and ijcore vmware.")
-        self.parser.add_argument("-f", "--file",
-                                 dest="file",
-                                 required=False,
-                                 help="Write the hostname your want to delete \
-                                 here.")
 
     def get_area(self, hostname):
         """Get the area us/eu/as according to hostname."""
-        locate = hostname[0:2].upper()
-        self.logger.debug("locate: {}".format(locate))
-        for area in self.area_list:
-            area_file = self.area_conf + area + ".txt"
-            self.logger.debug("area_file: {}".format(area_file))
-            f = open(area_file, "r")
-            lines = f.readlines()
-            for line in lines:
-                if locate in line:
-                    self.logger.debug("area: {}".format(area))
-                    return area
-        self.not_exist(locate)
+        try:
+            locate = hostname[0:2].upper()
+            self.logger.debug("locate: {}".format(locate))
+            for area in self.area_list:
+                area_file = self.area_conf + area + ".txt"
+                self.logger.debug("area_file: {}".format(area_file))
+                f = open(area_file, "r")
+                lines = f.readlines()
+                for line in lines:
+                    if locate in line:
+                        self.logger.debug("area: {}".format(area))
+                        return area
+            self.not_exist(locate)
+        except Exception as e:
+            self.error("get_area: %s" % e)
 
     def get_vcenter(self, vcenter):
         """Get the vcenter for vmware."""
-        vcenterfile = self.area_conf + "vmware.txt"
-        self.logger.debug("vcenterfile: {}".format(vcenterfile))
-        fr = open(vcenterfile, "r")
-        lines = fr.readlines()
-        for line in lines:
-            if vcenter in line:
-                vcenter = "".join(line.split())
-                self.logger.debug("vcenter: {}".format(vcenter))
-                return vcenter
-        self.not_exist("%s" % vcenter)
+        try:
+            vcenterfile = self.area_conf + "vmware.txt"
+            self.logger.debug("vcenterfile: {}".format(vcenterfile))
+            fr = open(vcenterfile, "r")
+            lines = fr.readlines()
+            for line in lines:
+                if vcenter in line:
+                    vcenter = "".join(line.split())
+                    self.logger.debug("vcenter: {}".format(vcenter))
+                    return vcenter
+            self.not_exist("%s" % vcenter)
+        except Exception as e:
+            self.error("get_vcenter: %s" % e)
 
     def get_mii_site(self, hostname):
         """Get the for _MII_SITEDATABASE in mii primary or backup server."""
-        mii_site = hostname[2:5].upper()
-        self.logger.debug("mii_site: {}".format(mii_site))
-        return mii_site
+        try:
+            mii_site = hostname[2:5].upper()
+            self.logger.debug("mii_site: {}".format(mii_site))
+            return mii_site
+        except Exception as e:
+            self.error("get_mii_site: %s" % e)
 
-    def get_type(self, type):
-        if type in ["ad", "mii_win-primary", "mii_win-bck"]:
-            type = type
-            mode = 1
-        elif type in ["mii", "ijcore"]:
-            type = type
-            mode = 0
-        else:
-            type = type.split("@")[0]
-            mode = type.split("@")[1]
-            if not mode:
-                self.error("Please specify address mode for normal host.")
-        self.logger.debug("type: {}".format(type))
-        self.logger.debug("mode: {}".format(mode))
-        return type, mode
+    def get_types(self, types):
+        try:
+            if types in ["ad", "mii_win-primary", "mii_win-bck"]:
+                types = types
+                mode = 1
+            elif types in ["mii", "ijcore"]:
+                types = types
+                mode = 0
+            else:
+                old_type = types
+                types = old_type.split("@")[0]
+                mode = old_type.split("@")[1]
+                if not mode:
+                    self.error("Please specify address mode for normal host.")
+            self.logger.debug("types: {}".format(types))
+            self.logger.debug("mode: {}".format(mode))
+            return types, mode
+        except Exception as e:
+            self.error("get_types: %s" % e)
 
     def write_one_host(self, hostfile, lines, vcenter,
                        area, mii_site, hostname, address):
         """Write to one host file."""
-        fw = open(hostfile, "w")
-        for l in lines:
-            self.logger.debug("l: {}".format(l))
-            if "ohtpl_area_%s" in l:
-                fw.write(l % area)
-            elif "ohtpl_sys_vmware_%s_%s" in l:
-                l_vcenter = l.replace("ohtpl_sys_vmware_%s_%s", str(vcenter))
-                fw.write(l_vcenter)
-            elif "host_name" in l:
-                fw.write(l % hostname)
-            elif "address" in l:
-                fw.write(l % address)
-            elif "_MII_SITEDATABASE" in l:
-                fw.write(l % mii_site)
-            elif "%s" not in l:
-                fw.write(l)
-            # If %s inside but not specify, can not handle it.
-            else:
-                self.error("write_host: unknow argument %s inside.")
+        try:
+            fw = open(hostfile, "w")
+            for l in lines:
+                self.logger.debug("l: {}".format(l))
+                if "ohtpl_area_%s" in l:
+                    fw.write(l % area)
+                elif "ohtpl_sys_vmware_%s_%s" in l:
+                    l_vcenter = l.replace("ohtpl_sys_vmware_%s_%s",
+                                          str(vcenter))
+                    fw.write(l_vcenter)
+                elif "host_name" in l:
+                    fw.write(l % hostname)
+                elif "address" in l:
+                    fw.write(l % address)
+                elif "_MII_SITEDATABASE" in l:
+                    fw.write(l % mii_site)
+                elif "%s" not in l:
+                    fw.write(l)
+                # If %s inside but not specify, can not handle it.
+                else:
+                    self.error("write_host: unknow argument %s inside.")
+        except Exception as e:
+            self.error("write_one_host: %s" % e)
 
     def create_host(self):
-        """Get type from -t and read hostname and address and write to the \
+        """Get types from -t and read hostname and address and write to the \
             hosts in nagios."""
         try:
             vcenter = ""
             area = ""
             mii_site = ""
-            for loop in range(0, len(self.args.type)):
-                type = self.args.type[loop]
-                (type, mode) = self.get_type(type)
+            for loop in range(0, len(self.args.types)):
+                types = self.args.types[loop]
+                self.logger.debug("types: {}".format(types))
+                (types, mode) = self.get_types(types)
 
                 # Get the template file.
-                template = self.host_conf + type + ".cfg"
+                template = self.host_conf + types + ".cfg"
                 self.logger.debug("template: {}".format(template))
                 ftr = open(template, "r")
                 lines = ftr.readlines()
 
                 # Get the hostname and address file.
-                host = self.host_conf + type + ".txt"
+                host = self.host_conf + types + ".txt"
                 self.logger.debug("host: {}".format(host))
-                fhr = open(host, "r")
+                des_host = self.host_conf + types + ".tmp"
+                self.logger.debug("des_host: {}".format(des_host))
+                self.delete_blank_line(host, des_host)
+                fhr = open(des_host, "r")
                 h_lines = fhr.readlines()
 
                 for line in h_lines:
@@ -168,12 +177,12 @@ class Host(NagiosAuto):
                     hostfile = self.g_dir + hostname + ".cfg"
                     self.logger.debug("hostfile: {}".format(hostfile))
 
-                    if type in ["ad"]:
+                    if types in ["ad"]:
                         area = self.get_area(hostname)
-                    elif type in ["mii_win-primary", "mii_win-bck"]:
+                    elif types in ["mii_win-primary", "mii_win-bck"]:
                         area = self.get_area(hostname)
                         mii_site = self.get_mii_site(hostname)
-                    elif type in ["mii", "ijcore"]:
+                    elif types in ["mii", "ijcore"]:
                         if self.args.vcenter:
                             vcenter = self.get_vcenter(self.args.vcenter)
                         else:
@@ -192,7 +201,15 @@ class Host(NagiosAuto):
             self.error("create_host: %s" % e)
 
     def delete_host(self):
+        files = self.host_conf + "host.txt"
+        self.logger.debug("files: {}".format(files))
+        des_files = self.host_conf + "host.tmp"
+        self.logger.debug("des_files: {}".format(des_files))
+        self.delete_blank_line(files, des_files)
+        self.fr = open(des_files, "r")
+        self.lines = self.fr.readlines()
         for line in self.lines:
+            self.logger.debug("line: {}".format(line))
             hostname = line.split()[0].split(".")[0].strip().upper()
             hostfile = self.g_dir + hostname + ".cfg"
             self.logger.debug("hostfile: {}".format(hostfile))

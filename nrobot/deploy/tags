@@ -8,6 +8,8 @@ Deploy	deploy.py	/^class Deploy(NagiosAuto):$/;"	kind:class	inherits:NagiosAuto
 __init__	deploy.py	/^    def __init__(self, *args, **kwargs):$/;"	kind:member	access:public
 asyn_branch	deploy.py	/^    def asyn_branch(self, branch, output):$/;"	kind:member	access:public
 commit_branch	deploy.py	/^    def commit_branch(self):$/;"	kind:member	access:public
+commit_one_branch	deploy.py	/^    def commit_one_branch(self, comment):$/;"	kind:member	access:public
+conflict_branch	deploy.py	/^    def conflict_branch(self, output):$/;"	kind:member	access:public
 create_branch	deploy.py	/^    def create_branch(self):$/;"	kind:member	access:public
 create_one_branch	deploy.py	/^    def create_one_branch(self, branch):$/;"	kind:member	access:public
 define_options	deploy.py	/^    def define_options(self):$/;"	kind:member	access:public
@@ -15,5 +17,5 @@ delete_branch	deploy.py	/^    def delete_branch(self):$/;"	kind:member	access:pu
 delete_one_branch	deploy.py	/^    def delete_one_branch(self, branch):$/;"	kind:member	access:public
 deploy_branch	deploy.py	/^    def deploy_branch(self):$/;"	kind:member	access:public
 merge_branch	deploy.py	/^    def merge_branch(self, branch):$/;"	kind:member	access:public
-push_branch	deploy.py	/^    def push_branch(self, branch, user):$/;"	kind:member	access:public
+push_one_branch	deploy.py	/^    def push_one_branch(self, branch, remote_branch):$/;"	kind:member	access:public
 status_branch	deploy.py	/^    def status_branch(self, branch):$/;"	kind:member	access:public
