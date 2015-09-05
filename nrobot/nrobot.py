@@ -11,12 +11,14 @@
 # Description:
 ######################################################################
 
-import os
 from deploy.deploy import Deploy
 from application.application import Application
 from host.host import Host
 # from service.service import Service
 # from web.web import Web
+import nrobot
+
+import os
 
 
 # class NRobot(Application, Host, Service, Deploy):
@@ -72,7 +74,8 @@ class NRobot(Application, Host, Deploy):
 
 
 def main():
-    robot = NRobot("nagiosauto", "1.0", "Config nagios automatic")
+    robot = NRobot(name=nrobot.NAME, version=nrobot.VERSION,
+                   description=nrobot.DESCRIPTION)
     os.chdir(robot.args.path)
 
     # Create new application.

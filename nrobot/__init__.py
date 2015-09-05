@@ -11,3 +11,6 @@
 # Description:
 ######################################################################
 
+NAME="nrobot"
+VERSION="1.0.0"
+DESCRIPTION="Config nagios automatic."
