@@ -6,11 +6,10 @@
 # Name: __init__.py
 # Author: Canux canuxcheng@163.com                                   #
 # Version: V1.0                                                      #
-# Time: Thu 13 Aug 2015 02:58:10 AM EDT
+# Time: Wed 09 Sep 2015 09:20:51 PM EDT
 ######################################################################
 # Description:
 ######################################################################
 
-NAME="nrobot"
-VERSION="1.0.0"
-DESCRIPTION="Config nagios automatic."
+__version__ = "2.0.0.0"
+__description__ = "Config nagios automatic."

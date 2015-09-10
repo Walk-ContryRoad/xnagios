@@ -44,7 +44,7 @@ class Host(NagiosAuto):
                                  'ijcore', 'mii_win-primary', 'mii_win-bck']. \
                                  Read template from types.cfg and \
                                  read hostname and ip address from types.txt. \
-                                 Use types@mode for normal host. \
+                                 Use [types@mode] for normal host. \
                                  mode=0 use dns as address. \
                                  mode=1 use ip as address.")
         self.parser.add_argument("-v", "--vcenter",

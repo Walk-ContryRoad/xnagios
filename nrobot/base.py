@@ -23,9 +23,9 @@ class NagiosAuto(object):
     def __init__(self, name=None, version='', description=''):
         # Init the basic information.
         self.name = os.path.basename(sys.argv[0]) if not name else name
-        self.version = version
-        self.description = description
-        self.path = "/home/chengca/faurecia-nagios-configuration"
+        self.version = __import__("nrobot").__version__
+        self.description = __import__("nrobot").__description__
+        self.path = "/home/chengca/GIT/gearman/faurecia-nagios-configuration"
 
         # Init the logger.
         logging.basicConfig(format='[%(levelname)s] (%(module)s) %(message)s')

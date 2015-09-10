@@ -16,7 +16,6 @@ from application.application import Application
 from host.host import Host
 # from service.service import Service
 # from web.web import Web
-import nrobot
 
 import os
 
@@ -74,8 +73,8 @@ class NRobot(Application, Host, Deploy):
 
 
 def main():
-    robot = NRobot(name=nrobot.NAME, version=nrobot.VERSION,
-                   description=nrobot.DESCRIPTION)
+    # robot = NRobot(version="2.0.0.0", description="Config nagios automatic.")
+    robot = NRobot()
     os.chdir(robot.args.path)
 
     # Create new application.

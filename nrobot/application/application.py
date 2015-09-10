@@ -50,11 +50,8 @@ class Application(NagiosAuto):
                                  eg: win aix solaris linux as400 bladecenter \
                                  Multity system use -s system1 -s system2 ...")
 
-    def create_hostgroup(self):
-        """Create hostgroup."""
-        if os.path.isfile(self.hostgroupfile):
-            self.already_exist(self.hostgroupfile)
-        else:
+    def write_hostgroup(self):
+        try:
             fhr = open(self.hostgroup, "r")
             lines = fhr.readlines()
             fhw = open(self.hostgroupfile, "w")
@@ -65,24 +62,33 @@ class Application(NagiosAuto):
                     fhw.write(line)
             fhr.close()
             fhw.close()
+        except Exception as e:
+            self.error("write_hostgroup: %s" % e)
 
-    def create_template(self):
-        """Create template."""
-        if os.path.isfile(self.templatefile):
-            self.already_exist(self.templatefile)
+    def create_hostgroup(self):
+        """Create hostgroup."""
+        if os.path.isfile(self.hostgroupfile):
+            self.already_exist(self.hostgroupfile)
+            if self.args.force:
+                self.write_hostgroup()
         else:
+            self.write_hostgroup()
+
+    def write_template(self):
+        try:
             ftr = open(self.template, "r")
             lines = ftr.readlines()
             ftw = open(self.templatefile, "a")
             for loop in range(0, len(lines)):
                 line = lines[loop]
+                self.logger.debug("line {0}: {1}".format(loop, line))
                 if 0 <= loop <= 13:
-                    if loop == 7:
+                    if loop == 6:
                         if self.args.domain:
                             ftw.write(line % self.args.domain)
                         else:
-                            pass
-                    elif "%s" in line and loop != 7:
+                            continue
+                    elif loop != 6 and "%s" in line:
                         ftw.write(line % self.application)
                     else:
                         ftw.write(line)
@@ -112,6 +118,17 @@ class Application(NagiosAuto):
                             ftw.write(line % (self.application, system))
                         else:
                             ftw.write(line)
+        except Exception as e:
+            self.error("write_template: %s" % e)
+
+    def create_template(self):
+        """Create template."""
+        if os.path.isfile(self.templatefile):
+            self.already_exist(self.templatefile)
+            if self.args.force:
+                self.write_template()
+        else:
+            self.write_template()
 
     def create_application(self):
         try:
