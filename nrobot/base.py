@@ -15,6 +15,9 @@ import logging
 import argparse
 import sys
 import os
+path = os.path.abspath(os.path.dirname(__file__) + '/' + '..')
+sys.path.insert(0, path)
+import nrobot
 
 
 class NagiosAuto(object):
@@ -23,8 +26,8 @@ class NagiosAuto(object):
     def __init__(self, name=None, version='', description=''):
         # Init the basic information.
         self.name = os.path.basename(sys.argv[0]) if not name else name
-        self.version = __import__("nrobot").__version__
-        self.description = __import__("nrobot").__description__
+        self.version = nrobot.__version__
+        self.description = nrobot.__description__
         self.path = "/home/chengca/GIT/gearman/faurecia-nagios-configuration"
 
         # Init the logger.
