@@ -31,7 +31,7 @@ This is a open source project.
 If you are interested.
 Welcome to join us.
 You can download here:
-git@github.com:CanuxCheng/Nagios-Auto.git
+git@github.com:crazy-canux/xnagios.git
 
 ----------
 About bugs

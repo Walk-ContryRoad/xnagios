@@ -78,7 +78,7 @@ class Application(NagiosAuto):
         try:
             ftr = open(self.template, "r")
             lines = ftr.readlines()
-            ftw = open(self.templatefile, "a")
+            ftw = open(self.templatefile, "w")
             for loop in range(0, len(lines)):
                 line = lines[loop]
                 self.logger.debug("line {0}: {1}".format(loop, line))
@@ -118,6 +118,8 @@ class Application(NagiosAuto):
                             ftw.write(line % (self.application, system))
                         else:
                             ftw.write(line)
+            ftr.close()
+            ftw.close()
         except Exception as e:
             self.error("write_template: %s" % e)
 
@@ -132,7 +134,7 @@ class Application(NagiosAuto):
 
     def create_application(self):
         try:
-            if self.args.application:
+            if self.args.application and self.args.system:
                 self.application = self.args.application
                 self.hostgroupfile = self.h_dir + self.application + ".cfg"
                 self.templatefile = self.t_dir + self.application + ".cfg"
@@ -142,7 +144,8 @@ class Application(NagiosAuto):
                 self.create_hostgroup()
                 self.create_template()
             else:
-                self.error("Please use -a specify application.")
+                self.error("Please use -a specify application and -s specify \
+                           system.")
         except Exception as e:
             self.error("create_application: %s" % e)
 
