@@ -4,7 +4,7 @@
 # Copyright C 2015 Faurecia (China) Holding Co.,Ltd.                 #
 # All rights reserved                                                #
 # Name: base.py
-# Author: Canux canuxcheng@163.com                                   #
+# Author: Canux canuxcheng@gmail.com                                 #
 # Version: V1.0                                                      #
 # Time: Tue 11 Aug 2015 04:28:53 AM EDT
 ######################################################################

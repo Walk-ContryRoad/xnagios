@@ -4,7 +4,7 @@
 # Copyright C 2015 Faurecia (China) Holding Co.,Ltd.                 #
 # All rights reserved                                                #
 # Name: __init__.py
-# Author: Canux canuxcheng@163.com                                   #
+# Author: Canux canuxcheng@gmail.com                                 #
 # Version: V1.0                                                      #
 # Time: Wed 09 Sep 2015 09:20:51 PM EDT
 ######################################################################

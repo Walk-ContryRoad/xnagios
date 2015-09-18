@@ -4,7 +4,7 @@
 # Copyright C 2015 Faurecia (China) Holding Co.,Ltd.                 #
 # All rights reserved                                                #
 # Name: deploy.py
-# Author: Canux canuxcheng@163.com                                   #
+# Author: Canux canuxcheng@gmail.com                                 #
 # Version: V1.0                                                      #
 # Time: Mon 10 Aug 2015 10:18:25 PM EDT
 ######################################################################

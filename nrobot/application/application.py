@@ -4,7 +4,7 @@
 # Copyright C 2015 Faurecia (China) Holding Co.,Ltd.                 #
 # All rights reserved                                                #
 # Name: application.py
-# Author: Canux canuxcheng@163.com                                   #
+# Author: Canux canuxcheng@gmail.com                                 #
 # Version: V1.0                                                      #
 # Time: Thu 16 Jul 2015 05:03:18 AM EDT
 ######################################################################

@@ -4,7 +4,7 @@
 # Copyright C 2015 Faurecia (China) Holding Co.,Ltd.                 #
 # All rights reserved                                                #
 # Name: host.py
-# Author: Canux canuxcheng@163.com                                   #
+# Author: Canux canuxcheng@gmail.com                                 #
 # Version: V1.0                                                      #
 # Time: Thu 20 Aug 2015 02:27:23 AM EDT
 ######################################################################
