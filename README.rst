@@ -5,7 +5,7 @@ About this project
 This project is trying to config the nagios automatic.
 There are two kinds of styles.
 One is command line, and another is GUI.
-The program trying to filter data from redmine and trying to config the nagios automatic.
+The program trying to filter data from redmine/mosaic and trying to config the nagios automatic.
 And deploy the configuration to dev/inc automatic.
 
 ------
@@ -13,6 +13,7 @@ How to
 ------
 
 ./nrobot --help
+./nrobot -h
 
 --------
 Progress
@@ -20,8 +21,9 @@ Progress
 
 Now, create/remove application and create/remove host have finished.
 But you have to do something by your hands.
-Create/remove services is in progress.
-Filter data from redmine and GUI havn't finished.
+nrobot/service and config/service will be finish in version 3.0.
+nrobot/web will be finish in version 4.0.
+nrobot/gui will be finish in version 5.0.
 
 -------
 Join us
@@ -38,4 +40,4 @@ About bugs
 ----------
 
 If you find any bugs please contact the author.
-canux.cheng@faurecia.com
+canux.cheng@faurecia.com.
