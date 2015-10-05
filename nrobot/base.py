@@ -28,7 +28,7 @@ class NagiosAuto(object):
         self.name = os.path.basename(sys.argv[0]) if not name else name
         self.version = nrobot.__version__
         self.description = nrobot.__description__
-        self.user = os.path.getenv("HOME")
+        self.user = os.getenv("HOME")
         self.path = "/home/%s/GIT/gearman/faurecia-nagios-configuration"
 
         # Init the logger.
