@@ -87,7 +87,7 @@ class Host(NagiosAuto):
             self.error("get_vcenter: %s" % e)
 
     def get_mii_site(self, hostname):
-        """Get the for _MII_SITEDATABASE in mii primary or backup server."""
+        """Get _MII_SITEDATABASE for mii primary or backup server."""
         try:
             mii_site = hostname[2:5].upper()
             self.logger.debug("mii_site: {}".format(mii_site))
@@ -116,7 +116,7 @@ class Host(NagiosAuto):
             self.error("get_types: %s" % e)
 
     def write_one_host(self, hostfile, lines, vcenter,
-                       area, mii_site, hostname, address):
+                       area, mii_site, hostname, address, env):
         """Write to one host file."""
         try:
             fw = open(hostfile, "w")
@@ -124,6 +124,9 @@ class Host(NagiosAuto):
                 self.logger.debug("l: {}".format(l))
                 if "ohtpl_area_%s" in l:
                     fw.write(l % area)
+                elif "ohtpl_env_%s" in l:
+                    if env:
+                        fw.write(l % env)
                 elif "ohtpl_sys_vmware_%s_%s" in l:
                     l_vcenter = l.replace("ohtpl_sys_vmware_%s_%s",
                                           str(vcenter))
@@ -149,6 +152,7 @@ class Host(NagiosAuto):
             vcenter = ""
             area = ""
             mii_site = ""
+            env = ""
             for loop in range(0, len(self.args.types)):
                 types = self.args.types[loop]
                 self.logger.debug("types: {}".format(types))
@@ -174,13 +178,14 @@ class Host(NagiosAuto):
                     self.logger.debug("hostname: {}".format(hostname))
                     address = line.split()[int(mode)].strip().lower()
                     self.logger.debug("address: {}".format(address))
+                    if len([i for i in line.split() if i]) == 3:
+                        env = line.split()[2].strip().lower()
+                        self.logger.debug("env: {}".format(env))
                     hostfile = self.g_dir + hostname + ".cfg"
                     self.logger.debug("hostfile: {}".format(hostfile))
 
-                    if types in ["ad"]:
-                        area = self.get_area(hostname)
-                    elif types in ["mii_win-primary", "mii_win-bck"]:
-                        area = self.get_area(hostname)
+                    area = self.get_area(hostname)
+                    if types in ["mii_win-primary", "mii_win-bck"]:
                         mii_site = self.get_mii_site(hostname)
                     elif types in ["mii", "ijcore"]:
                         if self.args.vcenter:
@@ -192,11 +197,12 @@ class Host(NagiosAuto):
                     if os.path.isfile(hostfile):
                         self.already_exist("%s" % hostfile)
                         if self.args.force:
-                            self.write_one_host(hostfile, lines, vcenter, area,
-                                                mii_site, hostname, address)
+                            self.write_one_host(hostfile, lines, vcenter,
+                                                area, mii_site, hostname,
+                                                address, env)
                     else:
                         self.write_one_host(hostfile, lines, vcenter, area,
-                                            mii_site, hostname, address)
+                                            mii_site, hostname, address, env)
         except Exception as e:
             self.error("create_host: %s" % e)
 

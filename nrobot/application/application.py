@@ -82,13 +82,18 @@ class Application(NagiosAuto):
             for loop in range(0, len(lines)):
                 line = lines[loop]
                 self.logger.debug("line {0}: {1}".format(loop, line))
-                if 0 <= loop <= 13:
-                    if loop == 6:
+                if 0 <= loop <= 12:
+                    if loop == 4:
+                        if self.args.domain:
+                            ftw.write(line % self.application)
+                        else:
+                            ftw.write(line.splie(",")[0] % self.application)
+                    elif loop == 5:
                         if self.args.domain:
                             ftw.write(line % self.args.domain)
                         else:
                             continue
-                    elif loop != 6 and "%s" in line:
+                    elif loop != 4 and loop != 5 and "%s" in line:
                         ftw.write(line % self.application)
                     else:
                         ftw.write(line)
@@ -96,24 +101,24 @@ class Application(NagiosAuto):
                 system = self.args.system[loop]
                 for loo in range(0, len(lines)):
                     line = lines[loo]
-                    if 14 <= loo <= 22:
-                        if loo == 14 or loo == 16 or loo == 19:
+                    if 13 <= loo <= 21:
+                        if loo == 13 or loo == 15 or loo == 18:
                             ftw.write(line % (self.application, system))
-                        elif loo == 17:
+                        elif loo == 16:
                             ftw.write(line % self.application)
-                        elif loo == 18:
+                        elif loo == 17:
                             ftw.write(line % system)
                         else:
                             ftw.write(line)
             for loop in range(0, len(lines)):
                 line = lines[loop]
-                if 23 <= loop <= 25:
+                if 22 <= loop <= 24:
                     ftw.write(line)
             for loop in range(0, len(self.args.system)):
                 system = self.args.system[loop]
                 for loo in range(0, len(lines)):
                     line = lines[loo]
-                    if 26 <= loo <= 33:
+                    if 25 <= loo <= 32:
                         if "%s" in line:
                             ftw.write(line % (self.application, system))
                         else:

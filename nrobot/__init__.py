@@ -11,7 +11,7 @@
 # Description:
 ######################################################################
 
-__version__ = "2.0.0.0"
+__version__ = "2.1.0.0"
 __description__ = """Config nagios automatic.
 Any question contact the author Canux CHENG.
 Email: canux.cheng@faurecia.com."""
