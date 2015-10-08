@@ -39,6 +39,7 @@ class Host(NagiosAuto):
         self.parser.add_argument("-t", "--types",
                                  action="append",
                                  dest="types",
+                                 default=1,
                                  required=False,
                                  help="The host types, eg: ['ad', 'mii', \
                                  'ijcore', 'mii_win-primary', 'mii_win-bck']. \
@@ -51,6 +52,11 @@ class Host(NagiosAuto):
                                  dest="vcenter",
                                  required=False,
                                  help="Vcenter for mii and ijcore vmware.")
+        self.parser.add_argument("-m", "--miisite",
+                                 dest="miisite",
+                                 required=False,
+                                 help="_MII_SITEDATABASE for mii_win-primary \
+                                 and mii_win-bck")
 
     def get_area(self, hostname):
         """Get the area us/eu/as according to hostname."""
@@ -85,15 +91,6 @@ class Host(NagiosAuto):
             self.not_exist("%s" % vcenter)
         except Exception as e:
             self.error("get_vcenter: %s" % e)
-
-    def get_mii_site(self, hostname):
-        """Get _MII_SITEDATABASE for mii primary or backup server."""
-        try:
-            mii_site = hostname[2:5].upper()
-            self.logger.debug("mii_site: {}".format(mii_site))
-            return mii_site
-        except Exception as e:
-            self.error("get_mii_site: %s" % e)
 
     def get_types(self, types):
         try:
@@ -186,7 +183,11 @@ class Host(NagiosAuto):
 
                     area = self.get_area(hostname)
                     if types in ["mii_win-primary", "mii_win-bck"]:
-                        mii_site = self.get_mii_site(hostname)
+                        if self.args.miisite:
+                            mii_site = self.args.miisite.upper()
+                        else:
+                            self.error("Please use -m to specify \
+                                       _MII_SITEDATABASE")
                     elif types in ["mii", "ijcore"]:
                         if self.args.vcenter:
                             vcenter = self.get_vcenter(self.args.vcenter)
