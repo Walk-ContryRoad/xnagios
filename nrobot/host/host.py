@@ -39,7 +39,6 @@ class Host(NagiosAuto):
         self.parser.add_argument("-t", "--types",
                                  action="append",
                                  dest="types",
-                                 default=1,
                                  required=False,
                                  help="The host types, eg: ['ad', 'mii', \
                                  'ijcore', 'mii_win-primary', 'mii_win-bck']. \
