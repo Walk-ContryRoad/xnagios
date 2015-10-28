@@ -17,7 +17,7 @@ import sys
 import os
 path = os.path.abspath(os.path.dirname(__file__) + '/' + '..')
 sys.path.insert(0, path)
-import nrobot
+import xnagios
 
 
 class NagiosAuto(object):
@@ -26,8 +26,8 @@ class NagiosAuto(object):
     def __init__(self, name=None, version='', description=''):
         # Init the basic information.
         self.name = os.path.basename(sys.argv[0]) if not name else name
-        self.version = nrobot.__version__
-        self.description = nrobot.__description__
+        self.version = xnagios.__version__
+        self.description = xnagios.__description__
         self.user = os.getenv("USER")
         self.path = "/home/%s/GIT/gearman/faurecia-nagios-configuration" % \
             self.user
@@ -50,8 +50,8 @@ class NagiosAuto(object):
         self.logger.debug("description: %s", self.description)
 
         # Get the path.
-        self.cur = os.getcwd().replace("/nrobot", "")
-        self.conf = os.getcwd().replace("/nrobot", "/config")
+        self.cur = "/".join(os.getcwd().split("/")[:-1])
+        self.conf = self.cur + "/config"
         self.logger.debug("self.path = {}".format(self.path))
         self.logger.debug("self.cur = {}".format(self.cur))
         self.logger.debug("self.conf = {}".format(self.conf))

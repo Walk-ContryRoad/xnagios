@@ -3,7 +3,7 @@
 ######################################################################
 # Copyright (C) 2015 Faurecia (China) Holding Co.,Ltd.               #
 # All rights reserved                                                #
-# Name: nrobot.py
+# Name: nagios.py
 # Author: Canux canuxcheng@gmail.com                                 #
 # Version: V1.0                                                      #
 # Time: Fri 14 Aug 2015 01:51:44 AM EDT
@@ -16,7 +16,6 @@ from application.application import Application
 from host.host import Host
 # from service.service import Service
 # from web.web import Web
-
 import os
 
 
