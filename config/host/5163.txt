@@ -1,7 +1,0 @@
-nandcrim0002.dc.ege.ds 10.135.72.223
-nandccim0001.dc.ege.ds 10.135.72.224
-nandcscd0001.dc.ege.ds 10.135.72.232
-nandcscd0002.dc.ege.ds 10.135.72.233
-nandccog0001.dc.ege.ds 10.135.72.234
-nandcscc0001.dc.ege.ds 10.135.72.235
-nandcscc0002.dc.ege.ds 10.135.72.236

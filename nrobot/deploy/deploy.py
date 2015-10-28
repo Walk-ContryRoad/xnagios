@@ -219,7 +219,7 @@ class Deploy(NagiosAuto):
         """After you finish the request use this function to deploy
         to nagios."""
         for branch in ["develop", "incubator"]:
-            choice = self.input("Are you sure deploy on %s? " % branch)
+            choice = self.input("Are you sure merge to %s? " % branch)
             if choice == 0:
                 output = self.create_one_branch(branch)
                 self.asyn_branch(branch, output)
