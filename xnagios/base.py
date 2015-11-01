@@ -63,16 +63,16 @@ class NagiosAuto(object):
         """Define common arguments for all class."""
         self.parser = argparse.ArgumentParser(description=self.description)
         # Define the basic options here.
-        self.parser.add_argument("--version",
+        self.parser.add_argument("-V", "--version",
                                  action="version",
                                  version="%s %s" % (self.name, self.version),
                                  help="Show version.")
-        self.parser.add_argument("--debug",
+        self.parser.add_argument("-D", "--debug",
                                  action="store_true",
                                  dest="debug",
                                  required=False,
                                  help="Show debug information.")
-        self.parser.add_argument("--force",
+        self.parser.add_argument("-F", "--force",
                                  action="store_true",
                                  dest="force",
                                  required=False,
