@@ -41,7 +41,8 @@ class Host(NagiosAuto):
                                  dest="types",
                                  required=False,
                                  help="The host types, eg: ['ad', 'mii', \
-                                 'ijcore', 'mii_win-primary', 'mii_win-bck']. \
+                                 'mii_win-primary', 'mii_win-bck', 'ijcore', \
+                                 'ijcore_win-promary', 'ijcore_win-bck']. \
                                  Read template from types.cfg and \
                                  read hostname and ip address from types.txt. \
                                  Use [types@mode] for normal host. \
@@ -93,7 +94,8 @@ class Host(NagiosAuto):
 
     def get_types(self, types):
         try:
-            if types in ["ad", "mii_win-primary", "mii_win-bck"]:
+            if types in ["ad", "mii_win-primary", "mii_win-bck",
+                         "ijcore_win-primary", "ijcore_win-bck"]:
                 types = types
                 mode = 1
             elif types in ["mii", "ijcore"]:
