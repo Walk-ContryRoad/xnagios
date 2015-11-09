@@ -80,7 +80,6 @@ def main():
     if robot.args.create_application:
         robot.create_branch()
         robot.create_application()
-        robot.create_host()
         robot.commit_branch()
         robot.deploy_branch()
     elif robot.args.delete_application:

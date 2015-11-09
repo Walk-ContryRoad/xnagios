@@ -47,8 +47,7 @@ class Application(NagiosAuto):
                                  dest="system",
                                  required=False,
                                  help="System used in this new applicaion. \
-                                 eg: win aix solaris linux as400 bladecenter \
-                                 Multity system use -s system1 -s system2 ...")
+                                 eg: -s win -s aix -s linux")
 
     def write_hostgroup(self):
         try:

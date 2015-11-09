@@ -47,16 +47,14 @@ class Host(NagiosAuto):
                                  read hostname and ip address from types.txt. \
                                  Use [types@mode] for normal host. \
                                  mode=0 use dns as address. \
-                                 mode=1 use ip as address.")
-        self.parser.add_argument("-v", "--vcenter",
-                                 dest="vcenter",
-                                 required=False,
-                                 help="Vcenter for mii and ijcore vmware.")
-        self.parser.add_argument("-m", "--miisite",
-                                 dest="miisite",
-                                 required=False,
-                                 help="_MII_SITEDATABASE for mii_win-primary \
-                                 and mii_win-bck")
+                                 mode=1 use ip as address.\
+                                 Use [types@vcenter for mii and ijcore.\
+                                 Use [types@miisite for mii_win-primary and \
+                                 mii_win-bck.\
+                                 For ijcore the miisite is IJCORE.\
+                                 eg: -t 1234@0 -t 4567@1 -t mii@vcenter \
+                                 -t mii_win-primary@mii_site -t ad \
+                                 -t ijcore_win-bck")
 
     def get_area(self, hostname):
         """Get the area us/eu/as according to hostname."""
@@ -84,31 +82,31 @@ class Host(NagiosAuto):
             fr = open(vcenterfile, "r")
             lines = fr.readlines()
             for line in lines:
-                if vcenter in line:
+                if vcenter.lower() in line:
                     vcenter = "".join(line.split())
                     self.logger.debug("vcenter: {}".format(vcenter))
                     return vcenter
-            self.not_exist("%s" % vcenter)
+            self.not_exist("vcenter: %s" % vcenter)
+            self.error("Please specify a usefull vcenter.")
         except Exception as e:
             self.error("get_vcenter: %s" % e)
 
     def get_types(self, types):
         try:
-            if types in ["ad", "mii_win-primary", "mii_win-bck",
-                         "ijcore_win-primary", "ijcore_win-bck"]:
+            if types.split("@")[0] in ["ad", "mii_win-primary", "mii_win-bck",
+                                       "ijcore_win-primary", "ijcore_win-bck"]:
                 types = types
                 mode = 1
-            elif types in ["mii", "ijcore"]:
+            elif types.split("@")[0] in ["mii", "ijcore"]:
                 types = types
                 mode = 0
             else:
-                old_type = types
-                types = old_type.split("@")[0]
-                mode = old_type.split("@")[1]
-                if not mode:
+                if len(types.split("@")) != 2:
                     self.error("Please specify address mode for normal host.")
-            self.logger.debug("types: {}".format(types))
-            self.logger.debug("mode: {}".format(mode))
+                else:
+                    old_type = types
+                    types = old_type.split("@")[0]
+                    mode = old_type.split("@")[1]
             return types, mode
         except Exception as e:
             self.error("get_types: %s" % e)
@@ -155,6 +153,22 @@ class Host(NagiosAuto):
                 types = self.args.types[loop]
                 self.logger.debug("types: {}".format(types))
                 (types, mode) = self.get_types(types)
+                if types in ["ijcore_win-primary", "ijcore_win-bck"]:
+                    mii_site = "IJCORE"
+                elif types.split("@")[0] in ["mii_win-primary",
+                                             "mii_win-bck"]:
+                    if len(types.split("@")) != 2:
+                        self.error("Please specify _MII_SITEDATABASE")
+                    else:
+                        mii_site = types.split("@")[1]
+                elif types.split("@")[0] in ["mii", "ijcore"]:
+                    if len(types.split("@")) != 2:
+                        self.error("Please specify vcenter for \
+                                   mii and ijcore.")
+                    else:
+                        vcenter = types.split("@")[1]
+                        vcenter = self.get_vcenter(vcenter)
+                types = types.split("@")[0]
 
                 # Get the template file.
                 template = self.host_conf + types + ".cfg"
@@ -183,17 +197,6 @@ class Host(NagiosAuto):
                     self.logger.debug("hostfile: {}".format(hostfile))
 
                     area = self.get_area(hostname)
-                    if types in ["mii_win-primary", "mii_win-bck"]:
-                        if self.args.miisite:
-                            mii_site = self.args.miisite.upper()
-                        else:
-                            self.error("Please use -m to specify \
-                                       _MII_SITEDATABASE")
-                    elif types in ["mii", "ijcore"]:
-                        if self.args.vcenter:
-                            vcenter = self.get_vcenter(self.args.vcenter)
-                        else:
-                            self.error("Please use -v to specify vcenter.")
 
                     # Write to the host in nagios.
                     if os.path.isfile(hostfile):
