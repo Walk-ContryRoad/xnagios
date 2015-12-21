@@ -16,10 +16,12 @@ import os
 
 
 class Host(NagiosAuto):
+
     """This class have three options to create create host file in nagios.
     You can specify the template you need.
     If you create a lots of host file at one time, this is more effeciency.
     """
+
     def __init__(self, *args, **kwargs):
         """Define some variables"""
         super(Host, self).__init__(*args, **kwargs)

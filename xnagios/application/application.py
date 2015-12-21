@@ -16,8 +16,10 @@ from base import NagiosAuto
 
 
 class Application(NagiosAuto):
+
     """This class used to create new hostgroup and template for a new
     application in nagios."""
+
     def __init__(self, *args, **kwargs):
         """Define variables"""
         super(Application, self).__init__(*args, **kwargs)
@@ -86,7 +88,8 @@ class Application(NagiosAuto):
                         if self.args.domain:
                             ftw.write(line % self.application)
                         else:
-                            ftw.write(line.splie(",")[0] % self.application)
+                            ftw.write(line.split(",")[0]
+                                      % self.application + "\n")
                     elif loop == 5:
                         if self.args.domain:
                             ftw.write(line % self.args.domain)

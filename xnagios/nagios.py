@@ -21,6 +21,7 @@ import os
 
 # class NRobot(Application, Host, Service, Deploy):
 class NRobot(Application, Host, Deploy):
+
     def define_options(self):
         super(NRobot, self).define_options()
         self.required_args.add_argument("--cb",
@@ -80,11 +81,15 @@ def main():
     if robot.args.create_application:
         robot.create_branch()
         robot.create_application()
+        if robot.args.create_host:
+            robot.create_host()
         robot.commit_branch()
         robot.deploy_branch()
     elif robot.args.delete_application:
         robot.create_branch()
         robot.delete_application()
+        if robot.args.delete_host:
+            robot.delete_host()
         robot.commit_branch()
         robot.deploy_branch()
     # Create new host.

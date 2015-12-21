@@ -17,7 +17,9 @@ from base import NagiosAuto
 
 
 class Deploy(NagiosAuto):
+
     """This class used to operate git and fab for nagios configuration."""
+
     def __init__(self, *args, **kwargs):
         """Define variables."""
         super(Deploy, self).__init__(*args, **kwargs)

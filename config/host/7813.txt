@@ -1,7 +1,0 @@
-euedccim0101.dc.ege.ds	10.20.106.235
-euedcscd0101.dc.ege.ds	10.20.106.253
-euedccog0101.dc.ege.ds	10.20.106.242
-euedcscc0101.dc.ege.ds	10.20.106.243
-euedcitc0101.dc.ege.ds	10.20.106.244
-nandcscc0102.dc.ege.ds	10.135.72.179
-

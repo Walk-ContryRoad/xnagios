@@ -21,8 +21,10 @@ import xnagios
 
 
 class NagiosAuto(object):
+
     """This is the base class for this project."""
     # Initialize a new class.
+
     def __init__(self, name=None, version='', description=''):
         # Init the basic information.
         self.name = os.path.basename(sys.argv[0]) if not name else name
@@ -138,6 +140,7 @@ class NagiosAuto(object):
 
 
 class NagiosAutoError(Exception):
+
     def __init__(self, msg):
         print "Error - %s" % msg
         raise SystemExit(-1)
