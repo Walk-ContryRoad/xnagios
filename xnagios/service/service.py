@@ -12,13 +12,16 @@
 ######################################################################
 
 from base import NagiosAuto
+from bs4 import 
 
 
 class Service(NagiosAuto):
+
     """This class used to add services for servers.
     You can specify a file include your servers.
     And another file include your services.
     """
+
     def __init__(self, *args, **kwargs):
         """Define some variables"""
         super(Service, self).__init__(*args, **kwargs)
@@ -39,3 +42,4 @@ class Service(NagiosAuto):
                                  eg: -t 1234, then the program will remove\
                                  all services in 1234.cfg from all hosts in\
                                  1234.txt.")
+        self.parser.add_argument("")
