@@ -12,8 +12,6 @@
 ######################################################################
 
 from base import NagiosAuto
-from bs4 import 
-
 
 class Service(NagiosAuto):
 
