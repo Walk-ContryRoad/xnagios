@@ -13,6 +13,7 @@
 
 from base import NagiosAuto
 
+
 class Service(NagiosAuto):
 
     """This class used to add services for servers.
@@ -40,4 +41,3 @@ class Service(NagiosAuto):
                                  eg: -t 1234, then the program will remove\
                                  all services in 1234.cfg from all hosts in\
                                  1234.txt.")
-        self.parser.add_argument("")
