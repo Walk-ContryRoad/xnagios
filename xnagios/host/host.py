@@ -42,7 +42,7 @@ class Host(NagiosAuto):
                                  required=False,
                                  help="The host types, eg: ['ad', 'mii', \
                                  'mii_win-primary', 'mii_win-bck', 'ijcore', \
-                                 'ijcore_win-promary', 'ijcore_win-bck']. \
+                                 'ijcore_win-primary', 'ijcore_win-bck']. \
                                  Read template from types.cfg and \
                                  read hostname and ip address from types.txt. \
                                  Use [types@mode] for normal host. \
