@@ -53,7 +53,7 @@ class NagiosAuto(object):
 
         # Get the path.
         self.cur = "/".join(os.getcwd().split("/")[:-1])
-        self.conf = self.cur + "/config"
+        self.conf = self.cur + "/etc"
         self.logger.debug("self.path = {}".format(self.path))
         self.logger.debug("self.cur = {}".format(self.cur))
         self.logger.debug("self.conf = {}".format(self.conf))

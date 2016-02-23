@@ -6,12 +6,7 @@
 # Name: __init__.py
 # Author: Canux canuxcheng@gmail.com                                 #
 # Version: V1.0                                                      #
-# Time: Wed 09 Sep 2015 09:20:51 PM EDT
+# Time: Sun 08 Nov 2015 09:24:21 PM EST
 ######################################################################
 # Description:
 ######################################################################
-
-__version__ = "3.0.0.0"
-__description__ = """Config nagios automatic.
-Any question contact the author Canux CHENG.
-Email: canux.cheng@faurecia.com."""
