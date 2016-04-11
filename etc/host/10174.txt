@@ -1,0 +1,29 @@
+nandchms0101.dc.ege.ds 10.135.72.180
+
+nandchms0201.dc.ege.ds 10.135.72.244
+
+nandcimp0101.dc.ege.ds 10.135.72.173
+
+nandcnco0101.dc.ege.ds 10.135.72.174
+
+nandcrim0101.dc.ege.ds 10.135.72.172
+
+nandcrim0102.dc.ege.ds 10.135.72.171
+
+nandcrms0101.dc.ege.ds 10.135.72.175
+
+nandcrms0102.dc.ege.ds 10.135.72.176
+
+nandcrms0103.dc.ege.ds 10.135.72.177
+
+nandcrms0104.dc.ege.ds 10.135.72.178
+
+nandcrms0201.dc.ege.ds 10.135.72.242
+
+nandcscd0001.dc.ege.ds 10.135.72.232
+
+nandctdw0201.dc.ege.ds 10.135.72.243
+
+nandctps0001.dc.ege.ds 10.135.72.241
+
+nandctps0201.dc.ege.ds 10.135.72.245
