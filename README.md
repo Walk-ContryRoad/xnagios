@@ -14,13 +14,12 @@ And deploy the configuration to dev/inc automatic.
 
 # How to use
 
-./nrobot --help
-
-./nrobot -h
+    ./nrobot --help
+    ./nrobot -h
 
 ***
 
-# Progress
+# TODO
 
 Now, create/remove application and create/remove host have finished.
 
