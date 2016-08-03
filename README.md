@@ -1,5 +1,4 @@
-About this project
-==================
+# About this project
 
 This project is trying to config the nagios automatic.
 
@@ -13,8 +12,7 @@ And deploy the configuration to dev/inc automatic.
 
 ***
 
-How to use
-==================
+# How to use
 
 ./nrobot --help
 
@@ -22,8 +20,7 @@ How to use
 
 ***
 
-Progress
-==================
+# Progress
 
 Now, create/remove application and create/remove host have finished.
 
@@ -37,8 +34,7 @@ nrobot/gui will be finish in version 5.0.
 
 ***
 
-Join us
-==================
+# Contribution
 
 This is a open source project.
 
@@ -46,16 +42,3 @@ If you are interested.
 
 Welcome to join us.
 
-Download:
-----------
-
-[Download](git@github.com:crazy-canux/xnagios.git)
-
-***
-
-About bugs
-==================
-
-If you find any bugs please contact the author.
-
-Email: <canux.cheng@faurecia.com>
